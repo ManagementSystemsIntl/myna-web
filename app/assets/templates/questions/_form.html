@@ -1,0 +1,123 @@
+<div>
+  <form name="questionForm" data-ng-submit="submit()" ng-class="{'input-rtl': question.direction == 'rtl' || direction == 'rtl'}">
+    <fieldset class="form-group col-md-12">
+      <label for="question.question_type_id">Question Type</label>
+      <select class="form-control" data-ng-model="question.question_type_id" data-ng-options="type.id as type.descriptive group by type.question_category.descriptive for type in question_types" data-ng-change="setQuestion(question.question_type_id)" required>
+        <option style="display:none" value="">select a question type</option>
+      </select>
+    </fieldset>
+
+    <fieldset class="form-group col-md-12" data-ng-show="options.item_name">
+      <label for="attributes.item_name">Item Name</label>
+      <div class="input-group">
+        <span class="input-group-addon">{{code}}_</span>
+        <input type="text" class="form-control" ng-model="attributes.item_name.value" data-ng-required="options.item_name">
+      </div>
+    </fieldset>
+
+    <fieldset class="form-group col-md-12" data-ng-show="options.prompt">
+      <label for="attributes.prompt">
+        <span data-ng-show="readonly_types.indexOf(question.question_type_id) > -1">Content</span>
+        <span data-ng-hide="readonly_types.indexOf(question.question_type_id) > -1">Question Prompt</span>
+      </label>
+      <div text-angular data-ng-model="attributes.prompt.value" placeholder="Question prompt goes here." data-ng-required="options.prompt"  ng-class="{'input-rtl': question.direction == 'rtl' || direction == 'rtl'}"></div>
+    </fieldset>
+
+    <fieldset class="form-group col-md-6 col-sm-6 col-xs-6" data-ng-show="options.minimum && options.maximum">
+      <label for="attributes.minimum">Minimum Value</label>
+      <input class="form-control" type="number" data-ng-model="attributes.minimum.value" data-ng-required="options.minimum">
+    </fieldset>
+
+    <fieldset class="form-group col-md-6 col-sm-6 col-xs-6" data-ng-show="options.minimum && options.maximum">
+      <label for="attributes.maximum">Maximum Value</label>
+      <input class="form-control" type="number" data-ng-model="attributes.maximum.value" data-ng-required="options.maximum">
+    </fieldset>
+
+    <fieldset class="form-group col-md-12 cf" data-ng-show="options.grid_string">
+      <label for="attributes.grid_string">Grid Contents
+        <a href="#" class="btn btn-xs btn-warning" ng-click="gridinput = 'builder'">Grid Builder</a>
+        <a href="#" class="btn btn-xs btn-warning" ng-click="gridinput = 'text'">Input Text</a>
+        <a href="#" class="btn btn-xs btn-warning" ng-click="gridinput = 'csv'">Upload CSV</a>
+      </label>
+      <div ng-show="gridinput === 'builder'" data-grid-input data-grid-string="{{attributes.grid_string.value}}" data-direction="{{question.direction}}" data-inputtype="{{gridinput}}"></div>
+      <div ng-show="gridinput === 'text'">
+        <p>Enter the cells of the grid as a 'double-dash-delimited' (--) string.</p>
+        <textarea class="form-control grid-input" type="text" data-ng-model="attributes.grid_string.value" placeholder="One--word--or two--or more can go--between--double--dashes...--Whatever is--between--the dashes--appears--in a--single--grid cell--..." data-ng-required="options.grid_string"></textarea>
+      </div>
+      <div data-ng-show="gridinput === 'csv'">
+        <p>Upload a CSV document containing the cells of the grid. The CSV document must include a header row for each column (c1, c2, c3, etc). For RTL language grids, the columns should be reversed, such that the first column (c1) will be the left-most column in the CSV while it represents the right-most column in the instrument.</p>
+        <div data-ng-csv-import data-header="csv.header" data-separator="csv.separator" data-callback="csvCallback" data-content="csv.content" data-result="csv.result"></div>
+        <pre class="margin-top-15" data-ng-show="grid_preview">{{grid_preview}}</pre>
+      </div>
+    </fieldset>
+
+    <fieldset class="form-group col-md-4 col-sm-4 col-xs-4" data-ng-show="options.grid_timer">
+      <label for="attribute.grid_timer">Timer (seconds) <a href="#" style="font-size: 10px;" ng-click="$event.preventDefault(); timerHelp = !timerHelp"><i class="fa fa-fw fa-info-circle fa-lg"></i><span>{{timerHelp ? 'hide help' : 'show help'}}</span></a></label>
+      <input class="form-control" ng-hide="timerHelp" type="number" data-ng-model="attributes.grid_timer.value" data-ng-required="options.grid_timer" placeholder="60">
+      <p ng-show="timerHelp && options.grid_string">
+        Enter -1 for no timer
+      </p>
+    </fieldset>
+
+    <fieldset class="form-group col-md-4 col-sm-4 col-xs-4" data-ng-show="options.grid_autostop">
+      <label for="attribute.grid_autostop">Grid AutoStop <a href="#" style="font-size: 10px;" ng-click="$event.preventDefault(); astopHelp = !astopHelp"><i class="fa fa-fw fa-info-circle fa-lg"></i><span>{{astopHelp ? 'hide help' : 'show help'}}</span></a></label>
+      <input ng-hide="astopHelp" class="form-control" type="number" data-ng-model="attributes.grid_autostop.value" data-ng-required="options.grid_autostop" placeholder="10">
+      <p ng-show="astopHelp">
+        Enter -1 for no autostop
+      </p>
+    </fieldset>
+
+    <fieldset class="form-group col-md-4 col-sm-4 col-xs-4" data-ng-show="options.grid_width">
+      <label for="attribute.grid_width">Items per Row</label>
+      <select class="form-control" data-ng-model="attributes.grid_width.value" data-ng-options="width as width for width in grid_widths"  data-ng-required="options.grid_width">
+        <option style="display:none" value="">how many items per row?</option>
+      </select>
+    </fieldset>
+
+    <fieldset class="form-group col-md-12" data-ng-show="options.display_as">
+      <label for="attribute.display_as">Display As</label>
+      <select class="form-control" data-ng-model="attributes.display_as.value" data-ng-options="option.value as option.name for option in display_options" data-ng-required="options.display_as">
+        <option style="display:none" value="">display as</option>
+      </select>
+    </fieldset>
+
+    <fieldset class="form-group col-md-12 radio-toggle cf" data-ng-show="(!question.id && choice_types.indexOf(question.question_type_id) > -1)||(question.id && options.choice)">
+      <div class="cf margin-top-15">
+        <label for="useChoiceList">Use a Choice List?</label>
+        <label class="toggle first form-control"><input type="radio" data-ng-model="useChoiceList" data-ng-value="true"><span>Yes</span></label>
+        <label class="toggle last form-control"><input type="radio" data-ng-model="useChoiceList" data-ng-value="false"><span>No</span></label>
+      </div>
+      <div data-ng-if="!useChoiceList" class="margin-top-15">
+        <div data-custom-options-form data-options="customOptions" data-otype="choiceOption" class="form-group"></div>
+      </div>
+      <div data-ng-show="useChoiceList" class="margin-top-15">
+        <select class="form-control" data-ng-model="question.choice_list_id" data-ng-options="list.id as list.name for list in choiceLists"  data-ng-required="useChoiceList">
+          <option style="display:none" value="">choose a choice list</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <fieldset class="form-group col-md-12" data-ng-show="options.condition">
+      <label for="attributes.condition">Visibility Condition <a href="#" style="font-size: 10px;" ng-click="$event.preventDefault(); conditionHelp = !conditionHelp"><i class="fa fa-fw fa-info-circle fa-lg"></i><span>{{conditionHelp ? 'hide help' : 'show help'}}</span></a></label>
+      <div ng-show="conditionHelp">
+        Visibility conditions must be a valid JavaScript operation. Use the <b>$</b> operator and <b>Question Code</b> values to access form values. For instance, if this question/prompt is to show only when question {{code}}_x is marked correct (i.e. value is '1'), its visibility condition can be set to either of the following: <code>${{code}}_x === '1'</code> or <code>${{code}}_x !== '2' && ${{code}}_x !== '-8'</code><br><br>Grids have more options for visibility conditions. Variables such as position of last item read and presence of autostop (among others) are available using the following operators:
+        <ul>
+          <li><code>timeRemaining</code> integer - how much time is left?</li>
+          <li><code>lastRead</code> integer - how many items were attempted?</li>
+          <li><code>autostopped</code> boolean - was the autostop triggered?</li>
+          <li><code>manualstopped</code> boolean - was the grid stopped manually?</li>
+          <li><code>attempted</code> boolean - has the grid been completed?</li>
+          <li><code>incorrect</code> array - indexes (1-based strings) for items marked as incorrect</li>
+        </ul><br>
+        To access these variables for a grid, use its <b>Item Name</b> value. For instance, if this question/prompt is to show only when  grid {{code}}_grid_1 has fewer than 5 words read and is not autostopped, its visibility condition can be set as <code>${{code}}_grid_1.lastRead < 5 && !${{code}}_grid_1.autostopped</code>. Visibility conditions can be as simple or complex as you can make them, but they are only scoped to the current subtask.
+      </div>
+      <input ng-hide="conditionHelp" type="text" class="form-control" data-ng-model="attributes.condition.value" placeholder="$item_x === 1">
+    </fieldset>
+
+    <fieldset class="form-group col-md-12">
+      <input type="submit" value="Save" class="btn btn-success" data-ng-class="{disabled: questionForm.$invalid || (options.grid_string && !attributes.grid_string.value)}">
+      <button type="button" class="btn btn-danger" data-ng-show="question.id" data-ng-click="delete()">Delete</button>
+    </fieldset>
+
+  </form>
+</div>

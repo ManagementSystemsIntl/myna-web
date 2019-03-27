@@ -1,0 +1,107 @@
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+  </div>
+
+  <ul class="nav navbar-top-links navbar-left">
+    <% if @ability.can? :see, :dashboards %>
+    <li class="toggle-active <%= active_class('dashboards') %>">
+      <%= link_to dashboard_path do %>
+        <i class="fa fa-dashboard fa-fw"></i> Dashboards
+      <% end %>
+    </li>
+    <% end %>
+    <% if @ability.can? :see, :builder %>
+    <li class="toggle-active <%= active_class('builder') %>">
+      <%= link_to builder_path do %>
+        <i class="fa fa-wrench fa-fw"></i> Form Builder
+      <% end %>
+    </li>
+    <% end %>
+    <% if @ability.can? :see, :all %>
+    <li class="toggle-active <%= active_class('management') %>">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-cogs fa-fw"></i> System Management <i class="fa fa-caret-down"></i>
+      </a>
+      <ul class="dropdown-menu">
+        <li class="toggle-active">
+          <%= link_to devices_path  do %>
+            <i class="fa fa-tablet fa-fw"></i> Manage Devices
+          <% end %>
+        </li>
+        <li class="toggle-active">
+          <%= link_to forms_path  do %>
+            <i class="fa fa-files-o fa-fw"></i> Manage Forms
+          <% end %>
+        </li>
+        <li class="toggle-active">
+          <%= link_to users_path  do %>
+            <i class="fa fa-users fa-fw"></i> Manage Users
+          <% end %>
+        </li>
+      </ul>
+    </li>
+    <% end %>
+  </ul>
+
+  <ul class="nav navbar-top-links navbar-right">
+    <li class="toggle-active <%= active_class('help') %>">
+      <%= link_to help_path do %>
+        <i class="fa fa-life-ring fa-fw"></i> Help Docs
+      <% end %>
+    </li>
+    <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+      </a>
+      <ul class="dropdown-menu dropdown-user">
+        <%= render 'layouts/nav_links_for_auth' %>
+      </ul>
+    </li>
+  </ul>
+
+  <% if @controller == "builder" || @controller == "dashboards" || @controller == "management" || @controller == "help" %>
+  <div class="navbar-default sidebar fixed" role="navigation">
+    <div class="cf">
+      <a class="navbar-brand" href="/">
+        <%= image_tag "logo/32x32.png", :class => "logo", :alt => "Myna Web" %> Myna Web - <%= @client.capitalize %>
+      </a>
+    </div>
+    <div class="sidebar-nav navbar-collapse">
+      <ui-view name="nav"></ui-view>
+    </div>
+  </div>
+  <% else %>
+  <div class="navbar-default sidebar static" role="navigation">
+    <div class="cf">
+      <a class="navbar-brand" href="/">
+        <%= image_tag "logo/32x32.png", :class => "logo", :alt => "Myna Web" %> Myna Web - <%= @client.capitalize %>
+      </a>
+    </div>
+    <div class="sidebar-nav navbar-collapse">
+      <ui-view name="nav"></ui-view>
+    </div>
+  </div>
+  <% end %>
+
+</nav>
+
+
+<script>
+  (function(){
+    var navs = document.querySelectorAll(".navbar-top-links .toggle-active");
+    navs.forEach(function(nav){
+      nav.addEventListener("click", function(e){
+        navs.forEach(function(n){
+          n.classList = "toggle-active";
+        });
+        nav.classList = "toggle-active active";
+      });
+    });
+  }())
+</script>

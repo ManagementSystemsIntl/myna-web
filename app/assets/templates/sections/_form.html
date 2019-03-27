@@ -1,0 +1,61 @@
+<div>
+  <form data-ng-submit="submit()" name="sectionForm">
+    <fieldset class="form-group col-md-4 col-sm-4 col-xs-6">
+      <label for="section.code">Subtask Code <i class="fa fa-fw fa-lg fa-info-circle" title="letters, numbers, dashes and underscores only (no spaces!)"></i></label>
+      <input class="form-control" type="text" data-ng-model="section.code" placeholder="fwr" required pattern="[a-zA-Z0-9-_]+">
+    </fieldset>
+    <fieldset class="form-group col-md-8 col-sm-4 col-xs-12">
+      <label for="section.name">Subtask Title</label>
+      <input class="form-control" type="text" data-ng-model="section.name" placeholder="Familiar Word Reading" required>
+    </fieldset>
+
+    <!-- <fieldset class="form-group col-md-6 col-sm-6 col-xs-6 radio-toggle cf">
+      <label for="section.grade">Grade(s)</label>
+      <label class="toggle form-control width-20" ng-class="{'first': $index == 0}" data-ng-repeat="grade in grades">
+        <input type="checkbox" data-ng-model="grade.checked" data-ng-change="check(grade)" name="section.grade" data-ng-required="checkedGrades.length == 0">
+        <span>{{grade.grade}}</span>
+      </label>
+    </fieldset> -->
+    <fieldset class="form-group col-md-6 col-sm-6 col-xs-6 radio-toggle cf">
+      <label for="section.skippable">Allow Skip?</label>
+      <label class="toggle first form-control"><input type="radio" data-ng-model="section.skippable" value="true"><span>Yes</span></label>
+      <label class="toggle last form-control"><input type="radio" data-ng-model="section.skippable" value="false"><span>No</span></label>
+    </fieldset>
+    <fieldset class="form-group col-md-6 col-sm-6 col-xs-6 radio-toggle cf">
+      <label for="section.is_publishable">Publish?</label>
+      <label class="toggle first form-control"><input type="radio" data-ng-model="section.is_publishable" value="true"><span>Yes</span></label>
+      <label class="toggle last form-control"><input type="radio" data-ng-model="section.is_publishable" value="false"><span>No</span></label>
+    </fieldset>
+    <fieldset class="form-group col-md-12">
+      <label for="section.hint">Subtask Help</label>
+      <div text-angular data-ng-model="section.hint" placeholder="The rules for this subtask are as follows..."  ng-class="{'input-rtl': section.direction == 'rtl'}"></div>
+    </fieldset>
+    <!-- <fieldset class="form-group col-md-12" data-ng-show="showShortcut">
+      <label for="section.shortcut">Shortcut</label>
+      <select class="form-control" data-ng-model="section.shortcut" data-ng-options="type as type for type in sectionTypes">
+        <option style="display:none" value="">select a section type</option>
+      </select>
+    </fieldset>
+    <fieldset class="form-group col-md-6 col-sm-6 col-xs-6" data-ng-show="section.shortcut && section.shortcut != 'grid' && section.shortcut != 'none'">
+      <label for="section.question_count">Question Count</label>
+      <input class="form-control" type="number" data-ng-model="section.question_count" data-ng-required="section.shortcut && section.shortcut != 'grid' && section.shortcut != 'none'">
+    </fieldset> -->
+    <!-- ||(section.shortcut && section.shortcut == 'multiquestion') -->
+    <fieldset class="form-group col-xs-6 col-xs-offset-6" data-ng-show="(editAutostop)">
+      <label for="section.autostop">AutoStop</label>
+      <input class="form-control" type="number" data-ng-model="section.autostop" data-ng-required="section.shortcut && section.shortcut == 'multiquestion'">
+    </fieldset>
+    <!-- data-ng-show="section.id" -->
+    <fieldset class="form-group col-xs-6 col-xs-offset-6" >
+      <p data-ng-show="editAutostop">Note: an AutoStop value should only be set for subtasks where the survey should continue to the next subtask if a number of consecutive questions are answered incorrectly. For other subtasks, leave this field blank.</p>
+      <button class="btn btn-primary right" type="button" data-ng-click="editAutostop = editAutostop ? false : true">
+        <span data-ng-show="!editAutostop">Edit AutoStop</span>
+        <span data-ng-show="editAutostop">Hide AutoStop</span>
+      </button>
+    </fieldset>
+    <fieldset class="form-group col-md-12">
+      <input type="submit" value="Save" class="btn btn-success" data-ng-class="{disabled: sectionForm.$invalid}">
+      <button type="button" class="btn btn-danger" data-ng-show="section.id" data-ng-click="delete()" confirm="If you delete this Subtask you will also delete any Questions contained within.<br>Are you sure you want to delete this Subtask?">Delete</button>
+    </fieldset>
+  </form>
+</div>

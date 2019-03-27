@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1><i class="fa fa-wrench fa-fw"></i> Form Builder</h1>
+  </div>
+</div>
+<hr>
+<div class="row margin-top-15 equal">
+  <p class="col-xs-12 lead"><i class="fa fa-fw fa-users"></i> Cohorts</p>
+  <div class="col-lg-8 col-sm-7 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-plus-circle"></i> Create new Cohort
+      </div>
+      <div class="panel-body">
+        <div data-survey-group-form data-group="vm.newSurveyGroup" data-languages=vm.newLanguages></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-sm-5 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-users"></i> Existing Cohorts
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table">
+            <tr data-ng-show="vm.surveyGroups.length == 0">
+              <td>This group currently has no cohorts.</td>
+            </tr>
+            <tr data-ng-repeat="sg in vm.surveyGroups">
+              <td><a data-ui-sref="builder.groupShow({id:sg.id})">{{sg.name}}</a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

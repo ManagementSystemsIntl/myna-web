@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1><i class="fa fa-dashboard fa-fw"></i> Dashboards</h1>
+  </div>
+</div>
+<hr>
+<div class="row margin-top-15 equal">
+  <p class="col-xs-12 lead"><i class="fa fa-fw fa-users"></i> Cohorts</p>
+  <div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <p ng-repeat="group in vm.surveyGroups">
+          <a data-ui-sref="dashboard.training({id: group.id})" class="btn btn-info btn-xs" data-state-loading>
+            <i class="fa fa-fw fa-bell"></i>
+          </a>
+          <a data-ui-sref="dashboard.monitoring({id: group.id})" class="btn btn-warning btn-xs" data-state-loading>
+            <i class="fa fa-fw fa-eye"></i>
+          </a>&nbsp;
+          <a data-ui-sref="dashboard.groupShow({id: group.id})" data-state-loading>{{group.name}}</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

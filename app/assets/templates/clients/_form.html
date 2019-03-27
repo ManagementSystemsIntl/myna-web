@@ -1,0 +1,12 @@
+<div>
+  <form data-ng-submit="submit()" name="clientForm">
+    <fieldset class="form-group">
+      <label>Client Name</label>
+      <input class="form-control" type="text" data-ng-model="client.name" placeholder="USAID Tataouine" required>
+    </fieldset>
+    <fieldset class="form-group">
+      <input type="submit" value="Save" class="btn btn-success" data-ng-class="{disabled: clientForm.$invalid}">
+      <button type="button" class="btn btn-danger" data-ng-show="client.id" data-ng-click="delete()" confirm="If you delete this Client you will also delete any associated Cohorts, Surveys, etc.<br>Are you sure you want to delete this Client?">Delete</button>
+    </fieldset>
+  </form>
+</div>

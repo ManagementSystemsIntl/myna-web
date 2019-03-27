@@ -1,0 +1,23 @@
+<div>
+  <form data-ng-submit="submit()" name="keyForm">
+    <fieldset class="form-group">
+      <label for="key.username">Couch Domain</label>
+      <input type="text" class="form-control" data-ng-model="key.db_address" required>
+    </fieldset>
+    <fieldset class="form-group">
+      <label for="key.username">Couch Username</label>
+      <input type="text" class="form-control" data-ng-model="key.username" required>
+    </fieldset>
+    <fieldset class="form-group">
+      <label for="key.pwd">Couch Password</label>
+      <input type="text" class="form-control" data-ng-model="key.pwd" required>
+    </fieldset>
+    <fieldset class="form-group">
+      <label for="key.pwd">Couch Database Name</label>
+      <input type="text" class="form-control" data-ng-model="key.db_name" required>
+    </fieldset>
+    <fieldset class="form-group">
+      <input type="submit" value="Save" class="btn btn-success" data-ng-class="{disabled: keyForm.$invalid}">
+    </fieldset>
+  </form>
+</div>

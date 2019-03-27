@@ -1,0 +1,13 @@
+<% if user_signed_in? %>
+  <li><a href="#">Hello, <%= current_user.name %>!</a></li>
+  <li>
+    <%= link_to edit_user_registration_path do %>
+      <i class="fa fa-gear fa-fw"></i> Edit Account
+    <% end %>
+  </li>
+  <li>
+    <%= link_to destroy_user_session_path, :method=>'delete' do %>
+      <i class="fa fa-sign-out fa-fw"></i> Logout
+    <% end  %>
+  </li>
+<% end %>

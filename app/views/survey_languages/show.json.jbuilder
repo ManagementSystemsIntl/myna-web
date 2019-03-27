@@ -1,0 +1,1 @@
+json.partial! "survey_languages/survey_language", survey_language: @survey_language

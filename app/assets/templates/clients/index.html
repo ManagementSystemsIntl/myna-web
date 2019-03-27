@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1><i class="fa fa-globe fa-fw"></i> Clients Index</h1>
+  </div>
+</div>
+<hr>
+<div class="row margin-top-15 equal">
+  <div class="col-lg-8 col-sm-7 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-plus-circle"></i> Add new Client
+      </div>
+      <div class="panel-body">
+        <div data-client-form data-client="ClientIndexVM.newClient"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-sm-5 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-globe"></i> Existing Clients
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table">
+            <tr data-ng-show="ClientIndexVM.clients.length == 0">
+              <td>There are no Clients yet.</td>
+            </tr>
+            <tr data-ng-repeat="client in ClientIndexVM.clients">
+              <td><a data-ui-sref="builder.clientShow({id:client.id})">{{client.name}}</a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

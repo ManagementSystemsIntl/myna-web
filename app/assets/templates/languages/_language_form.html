@@ -1,0 +1,30 @@
+<div>
+  <form name="languageForm" class="cf">
+    <div class="col-xs-12 table-responsive">
+      <table class="table table-no-border">
+        <tr>
+          <th><label>Name</label></th>
+          <th><label>Direction</label></th>
+          <th>&nbsp;</th>
+        </tr>
+        <tr data-ng-repeat="language in languages" class="margin-top-15 cf" ng-hide="language.markForDeletion">
+          <td class="form-group">
+            <input class="form-control" type="text" data-ng-model="language.name" placeholder="Swahili" required/>
+          </td>
+          <td class="form-group radio-toggle cf">
+            <label class="toggle form-control first"><input type="radio" data-ng-model="language.direction" value="ltr" required><span>LTR</span></label>
+            <label class="toggle form-control"><input type="radio" data-ng-model="language.direction" value="rtl" required><span>RTL</span></label>
+          </td>
+          <td class="form-group">
+            <button type="button" class="btn btn-danger btn-circle" data-ng-click="delete(language)" title="Remove" data-ng-show="languages.length > 1">
+              <i class="fa fa-trash-o fa-fw"></i>
+            </button>
+          </td>
+        </tr>
+      </table>
+      <div class="cf col-md-12">
+        <a class="btn btn-default btn-xs right" data-ng-click="addOne()"><i class="fa fa-plus-circle fa-fw"></i> Add another Language</a>
+      </div>
+    </div>
+  </form>
+</div>

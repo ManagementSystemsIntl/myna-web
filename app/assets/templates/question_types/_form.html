@@ -1,0 +1,41 @@
+<div>
+  <form name="questionTypeForm" data-ng-submit="submit()">
+    <fieldset class="form-group">
+      <label>Question Type Name</label>
+      <input class="form-control" type="text" data-ng-model="questionType.name" placeholder="no_spaces_allowed" required>
+    </fieldset>
+    <fieldset class="form-group">
+      <label>Question Type Pretty Name</label>
+      <input class="form-control" type="text" data-ng-model="questionType.descriptive" placeholder="Spaces are Allowed" required>
+    </fieldset>
+    <fieldset class="form-group radio-toggle cf">
+      <div class="col-md-4 col-sm-6 col-xs-6">
+        <label for="questionType.has_number">Has Number?</label>
+        <label class="toggle first form-control"><input type="radio" data-ng-model="questionType.has_number" value="true"><span>Yes</span></label>
+        <label class="toggle last form-control"><input type="radio" data-ng-model="questionType.has_number" value="false"><span>No</span></label>
+      </div>
+    </fieldset>
+    <fieldset class="form-group">
+      <div class="col-md-8 col-sm-6 col-xs-6">
+        <label for="questionType.question_category_id">Category</label>
+        <select class="form-control" data-ng-model="questionType.question_category_id" data-ng-options="category.id as category.descriptive for category in questionCategories" required>
+          <option style="display:none" value="">select a question category</option>
+        </select>
+      </div>
+
+    </fieldset>
+    <fieldset class="form-group">
+      <label for="questionType.question_options" class="col-md-12">Options</label>
+      <div data-ng-repeat="option in questionOptions" class="col-md-6">
+        <label class="form-control">
+          <input type="checkbox" data-ng-model="option.checked" data-ng-change="check(option)">
+          {{option.name}}
+        </label>
+      </div>
+    </fieldset>
+    <fieldset class="form-group">
+      <input type="submit" value="Save" class="btn btn-success" data-ng-class="{disabled: questionTypeForm.$invalid}">
+      <!-- <button type="button" class="btn btn-danger" data-ng-show="questionType.id" data-ng-click="delete()">Delete</button> -->
+    </fieldset>
+  </form>
+</div>

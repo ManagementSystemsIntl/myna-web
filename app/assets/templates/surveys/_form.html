@@ -1,0 +1,40 @@
+<div>
+  <form data-ng-submit="submit()" name="surveyForm">
+    <div class="cf">
+      <fieldset class="col-md-12 col-sm-12 col-xs-12 form-group">
+        <label for="survey.name">Survey Name</label>
+        <input class="form-control" type="text" data-ng-model="survey.name" required placeholder="Main Tool A"/>
+      </fieldset>
+
+      <fieldset class="form-group col-md-6 col-sm-6 col-xs-6 radio-toggle cf">
+        <label for="survey.grade">Grade(s)</label>
+        <label class="toggle form-control width-20" data-ng-repeat="grade in grades">
+          <input type="checkbox" data-ng-model="grade.checked" ng-click="check('grade',grade.checked)" name="survey.grade">
+          <span>{{grade.v}}</span>
+        </label>
+      </fieldset>
+
+      <fieldset class="form-group col-md-6 col-sm-6 col-xs-6 radio-toggle cf">
+        <label for="survey.gold_standards">Gold Standards</label>
+        <label class="toggle form-control width-33" data-ng-repeat="gs in goldStandards">
+          <input type="checkbox" data-ng-model="gs.checked" ng-click="check('gs',gs.checked)" name="survey.gold_standards">
+          <span>{{gs.v}}</span>
+        </label>
+      </fieldset>
+
+      <fieldset class="form-group col-md-6 col-sm-6 col-xs-12 radio-toggle cf">
+        <label for="survey.languages">Language</label>
+        <label class="toggle form-control width-33" data-ng-repeat="language in languagesCopy">
+          <input type="checkbox" data-ng-model="language.checked" name="survey.language" ng-click="check('language',language.checked, language.id)" ng-required="checked.language <= 0">
+          <span>{{language.name}}</span>
+        </label>
+      </fieldset>
+    </div>
+
+    <fieldset class="form-group col-md-12 col-sm-12 col-xs-12 cf">
+      <input type="submit" value="Save" class="btn btn-success" data-ng-class="{disabled: surveyForm.$invalid}">
+      <button type="button" class="btn btn-danger" data-ng-show="survey.id" data-ng-click="delete()" confirm="If you delete this Survey you will also delete any associated Subtasks, Questions, etc.<br>Are you sure you want to delete this Survey?">Delete</button>
+    </fieldset>
+
+  </form>
+</div>

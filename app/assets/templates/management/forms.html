@@ -1,0 +1,100 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1><i class="fa fa-fw fa-files-o"></i> Form Management</h1>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-12">
+
+    <div class="panel panel-default margin-top-15" ng-repeat="cohort in vm.tableData | orderBy:'id':true" ng-if="cohort.surveys.length > 0">
+      <div class="panel-heading cf">
+        <a href="#cohort{{cohort.id}}" data-toggle="collapse">
+          <i class="fa fa-fw fa-users"></i> {{cohort.name}}
+        </a>
+        <a href="#" class="btn btn-xs btn-default right" data-ng-click="vm.manageViews(cohort)" data-toggle="modal" data-target="#manageViewsModal">
+          <i class="fa fa-fw fa-database"></i> Manage Views
+        </a>
+      </div>
+      <div class="panel-body collapse" id="cohort{{cohort.id}}">
+        <div class="table-responsive">
+          <p ng-show="cohort.surveys.length == 0">No Surveys in this Cohort</p>
+          <table class="table" ng-show="cohort.surveys.length > 0">
+            <thead>
+              <tr>
+                <th>Assessment</th>
+                <th>Response Target</th>
+                <th>IRR Target</th>
+                <th>On Device?</th>
+                <th>Last Published</th>
+                <th>Editable Fields</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-ng-repeat="form in cohort.surveys | orderBy:['!is_active','name']">
+                <td>
+                  {{form.name}} ({{form.uuid}})
+                  <ul ng-show="form.is_a == 'survey_family'">
+                    <li ng-repeat="survey in form.surveys | orderBy:'order'">
+                      {{survey.name}} <span class="monospace">({{survey.random ? "R" : "S"}})</span>
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <span class="input-group">
+                    <input class="form-control" type="number" ng-model="form.target">
+                    <span class="input-group-addon btn" ng-click="vm.updateTarget(form,'target')">
+                      <i class="fa fa-fw fa-save"></i>
+                    </span>
+                  </span>
+                </td>
+                <td>
+                  <span class="input-group">
+                    <input class="form-control" type="number" ng-model="form.irr_target">
+                    <span class="input-group-addon btn" ng-click="vm.updateTarget(form,'irr_target')">
+                      <i class="fa fa-fw fa-save"></i>
+                    </span>
+                  </span>
+                </td>
+                <td>
+                  <p ng-show="form.last_published == 'Never'"> - </p>
+                  <a ng-hide="form.last_published == 'Never'"class="btn margin-sides monospace" ng-class="{'btn-success': !form.is_active, 'btn-danger': form.is_active}" data-ng-click="vm.toggleActive(form)">
+                    <span data-ng-show="form.is_active">Hide</span>
+                    <span data-ng-hide="form.is_active">Show</span>
+                  </a>
+                </td>
+                <td>{{form.last_published}}</td>
+                <td>
+                  <button class="btn btn-default margin-sides" data-toggle="modal" data-target="#fieldEditableModal" data-ng-click="vm.updateEditableModal(form)" ng-class="{disabled: form.last_published === 'Never'}">
+                    Editable Fields ({{form.pouchSchema.editable.length || 0}})
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="modal fade clickable" id="fieldTrackingModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div data-tracking-form></div>
+    </div>
+  </div>
+</div> -->
+<div class="modal fade clickable" id="fieldEditableModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div data-editable-form></div>
+    </div>
+  </div>
+</div>
+<div class="modal fade clickable" id="manageViewsModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+  <div class="modal-full">
+    <div class="modal-content">
+      <div data-views-modal></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div>
+  <div class="panel panel-default">
+    <p data-ng-show="diffs.length == 0" class="no-diff">No diffs between last published and current model</p>
+    <div class="table-responsive"  data-ng-show="diffs.length > 0">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Last Published</th>
+            <th>Last Saved</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-ng-repeat="diff in diffs">
+            <td><p data-ng-repeat="d in diff.delete">{{d}}</p></td>
+            <td><p data-ng-repeat="d in diff.insert">{{d}}</p></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

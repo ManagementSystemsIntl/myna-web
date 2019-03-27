@@ -1,0 +1,2 @@
+module SurveyFamiliesHelper
+end

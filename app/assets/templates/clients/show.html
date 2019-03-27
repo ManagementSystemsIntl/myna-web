@@ -1,0 +1,60 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="cf">
+      <div class="left" data-client-show data-client="ClientShowVM.client"></div>
+      <h1 class="left margin-sides">
+        <button type="button" class="btn btn-default btn-circle" data-ng-click="ClientShowVM.toggleEdit()" title="Edit Client" data-toggle="modal" data-target="#clientFormModal">
+          <i class="fa fa-pencil fa-fw"></i>
+        </button>
+      </h1>
+    </div>
+    <div class="modal fade" id="clientFormModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header cf">
+            <p class="lead no-margin left"><b>Edit Client</b></p>
+            <button type="button" class="btn btn-default btn-circle right" data-ng-click="ClientShowVM.toggleEdit()" title="Cancel" data-dismiss="modal" aria-hidden="true">
+              <i class="fa fa-times fa-fw"></i>
+            </button>
+          </div>
+          <div class="modal-body cf">
+            <div data-client-form data-client="ClientShowVM.client"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row margin-top-15 equal">
+  <p class="col-xs-12 lead"><i class="fa fa-fw fa-users"></i> Cohorts</p>
+  <div class="col-lg-8 col-sm-7 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-plus-circle"></i> Add new Cohort
+      </div>
+      <div class="panel-body">
+        <div data-survey-group-form data-group="ClientShowVM.newSurveyGroup" data-client="{{ClientShowVM.client.id}}" data-languages=ClientShowVM.newLanguages></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-sm-5 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-users"></i> Existing Cohorts
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table">
+            <tr data-ng-show="ClientShowVM.surveyGroups.length == 0">
+              <td>This group currently has no cohorts.</td>
+            </tr>
+            <tr data-ng-repeat="sg in ClientShowVM.surveyGroups">
+              <td><a data-ui-sref="builder.groupShow({client_id:ClientShowVM.client.id, id:sg.id})">{{sg.name}}</a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

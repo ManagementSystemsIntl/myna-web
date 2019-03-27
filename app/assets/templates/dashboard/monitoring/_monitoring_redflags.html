@@ -1,0 +1,16 @@
+<div>
+  <div class="col-md-4">
+    <select class="form-control col-md-4" ng-model="queryBuilder.query" ng-change="queryFlag()" ng-options="key as flag.alias for (key,flag) in flags"></select>
+  </div>
+  <div class="col-md-8">
+    <p>{{flag.description}}</p>
+    <p ng-show="!has_flags">No Red Flags configured!</p>
+  </div>
+  <div class="col-md-12 margin-top-15">
+    <p ng-show="querying && has_flags"><i class="fa fa-fw fa-1x fa-spin fa-spinner"></i></p>
+    <p ng-show="records.length == 0 && !querying">No instances</p>
+    <div ng-show="records.length > 0 && has_flags && !querying">
+      <a ng-repeat="record in records" href="#" class="btn btn-sm btn-default margin-sm" ng-click="showTooltipModal(record,'Title')"  data-toggle="modal" data-target="#monitoringTooltipModal">{{record.key[1]}} <span ng-show="record.value > 1">({{record.value}})</span></a>
+    </div>
+  </div>
+</div>

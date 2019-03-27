@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-md-12">
+    <h3>You are <b>{{vm.you.name}}</b> <span ng-show="vm.you.roles.length == 0">and you have <b>NO ROLES</b> (how are you even here?)</span><span ng-show="vm.you.roles.length > 0">and your <span ng-show="vm.you.roles.length > 1">roles are</span><span ng-hide="vm.you.roles.length > 1">role is</span> <b>{{vm.you.roles_display}}</b></span></h3>
+    <hr>
+    <h1><i class="fa fa-fw fa-users"></i> Manage Users</h1>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-12">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th data-ng-click="vm.setSortType('name')">Name
+              <span ng-show="vm.sortType == 'name'">
+                <i class="fa fa-fw fa-caret-up" ng-show="vm.sortDirection"></i>
+                <i class="fa fa-fw fa-caret-down" ng-hide="vm.sortDirection"></i>
+              </span>
+            </th>
+            <th data-ng-click="vm.setSortType('email')">Email
+              <span ng-show="vm.sortType == 'email'">
+                <i class="fa fa-fw fa-caret-up" ng-show="vm.sortDirection"></i>
+                <i class="fa fa-fw fa-caret-down" ng-hide="vm.sortDirection"></i>
+              </span>
+            </th>
+            <th>Confirmed?</th>
+            <th>Add Role</th>
+            <th>Roles</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-ng-repeat="user in vm.users | orderBy:vm.sortType:vm.sortDirection">
+            <td>{{user.name}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.confirmed}}</td>
+            <td>
+              <div data-role-form data-user="user"></div>
+            </td>
+            <td>
+              <div data-ng-repeat="role in user.roles" data-role-show data-role="role" data-user="user"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

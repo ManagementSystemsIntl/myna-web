@@ -1,0 +1,5 @@
+<div>
+  <p>{{family.name}}</p>
+  <button type="button" class="btn btn-xs margin-sm btn-show" ng-class="{'btn-primary':!survey.random, 'btn-warning':survey.random}" ng-repeat="survey in family.surveys">{{survey.name}}</button>
+  <p>Gold Standards: {{family.gold_standards || 'none'}}</p>
+</div>

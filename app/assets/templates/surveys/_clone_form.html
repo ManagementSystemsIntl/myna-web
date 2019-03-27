@@ -1,0 +1,54 @@
+<div>
+  <form data-ng-submit="clone()" name="cloneForm">
+    <div>
+      <p class="text-center">*Clone from*</p>
+      <fieldset class="form-group">
+        <label>Client</label>
+        <select class="form-control" data-ng-model="survey.from_client_id" data-ng-change="updateFromGroups()" data-ng-options="client.id as client.name for client in clients" required>
+          <option style="display:none" value="">select a client</option>
+        </select>
+      </fieldset>
+
+      <fieldset class="form-group" data-ng-show="survey.from_client_id">
+        <label>Cohort</label>
+        <select class="form-control" data-ng-model="survey.from_group_id" data-ng-change="updateSurveys()" data-ng-options="group.id as group.name for group in from_groups" required>
+          <option style="display:none" value="">select a cohort</option>
+        </select>
+      </fieldset>
+
+      <fieldset class="form-group" data-ng-show="survey.from_group_id">
+        <label>Survey</label>
+        <select class="form-control" data-ng-model="survey.survey_id" data-ng-options="survey.id as survey.name for survey in surveys" data-ng-change="setSelectedSurvey(survey.survey_id)" required>
+          <option style="display:none" value="">select a survey</option>
+        </select>
+      </fieldset>
+    </div>
+
+    <div>
+      <p class="text-center">*Into*</p>
+      <fieldset class="form-group">
+        <label>Client</label>
+        <select class="form-control" data-ng-model="survey.to_client_id" data-ng-change="updateToGroups()" data-ng-options="client.id as client.name for client in clients" required>
+          <option style="display:none" value="">select a client</option>
+        </select>
+      </fieldset>
+
+      <fieldset class="form-group" data-ng-show="survey.to_client_id">
+        <label>Cohort</label>
+        <select class="form-control" data-ng-model="survey.to_survey_group_id" data-ng-options="group.id as group.name for group in to_groups" required>
+          <option style="display:none" value="">select a cohort</option>
+        </select>
+      </fieldset>
+
+      <fieldset class="form-group" data-ng-show="survey.to_survey_group_id">
+        <label>As (name)</label>
+        <input class="form-control" type="text" data-ng-model="survey.to_name" placeholder="{{selectedSurvey.name}} copy" required>
+      </fieldset>
+    </div>
+
+    <fieldset class="form-group">
+      <input type="submit" value="Clone" class="btn btn-success" data-ng-class="{disabled: cloneForm.$invalid}">
+    </fieldset>
+
+  </form>
+</div>

@@ -1,0 +1,140 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="cf">
+      <div class="left more-room-right" data-survey-group-show data-group="vm.group"></div>
+      <button class="btn right margin-top-15" ng-class="{'btn-primary': !vm.syncing, 'btn-warning': vm.syncing}" data-ng-click="vm.sync()">
+        <span data-ng-show="!vm.syncing"><i class="fa fa-fw fa-refresh"></i> Sync Data</span>
+        <span data-ng-show="vm.syncing"><i class="fa fa-fw fa-refresh fa-spin"></i> Syncing Data...</span>
+      </button>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row margin-top-15 equal">
+  <div class="col-md-4 col-sm-5 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-dashboard"></i> Dashboards
+      </div>
+      <div class="panel-body">
+        <a data-ui-sref="dashboard.training({id:vm.group.id})" class="btn btn-lg btn-info btn-block" data-state-loading>
+          Training
+        </a>
+        <a data-ui-sref="dashboard.monitoring({id:vm.group.id})" class="btn btn-lg btn-warning btn-block" data-state-loading>
+          Monitoring
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8 col-sm-7 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-eraser"></i> Omit/Restore Records
+      </div>
+      <div class="panel-body">
+        <form>
+          <span>Omitted Count: {{vm.omittedCount}}</span>
+          <div class="form-group input-group">
+            <input type="text" class="form-control ng-class:(vm.syncing)?'disabled':'';" placeholder="Enter response IDs to omit" data-ng-model="vm.omitString">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-danger" data-ng-click="vm.omitRecords()" title="Omit records">
+                <i class="fa fa-times"></i>
+              </button>
+            </span>
+          </div>
+          <div class="form-group input-group">
+            <input type="text" class="form-control ng-class:(vm.syncing)?'disabled':'';" placeholder="Enter response IDs to restore" data-ng-model="vm.restoreString">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-success" data-ng-click="vm.restoreRecords()" title="Restore records">
+                <i class="fa fa-undo"></i>
+              </button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row margin-top-15 equal">
+  <div class="col-md-4 col-sm-5 col-xs-12" ng-hide="vm.hideDownload">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-file-excel-o"></i> Data Download
+      </div>
+      <div class="panel-body">
+        <form name="downloadForm" ng-submit="vm.downloadData()">
+          <fieldset class="form-group">
+            <label for="download.survey">Download Data for:</label>
+            <label class="form-control" style="height:100%;" data-ng-repeat="survey in vm.surveys">
+              <input type="checkbox" data-ng-model="survey.checked">&nbsp;&nbsp;<span>{{survey.survey_info.name}}  (v.{{survey.survey_info.iteration}})</span>
+            </label>
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="download.dataTypes">Include in download:</label>
+            <label class="form-control" style="height:100%;" data-ng-repeat="type in vm.downloadOptions.types">
+              <input type="checkbox" data-ng-model="type.checked">&nbsp;&nbsp;<span>{{type.alias}}</span>
+            </label>
+          </fieldset>
+          <fieldset class="form-group">
+            <label for="download.filename">Output zipfile name:</label>
+            <div class="input-group">
+              <input type="text" class="form-control" data-ng-model="vm.downloadOptions.filename" placeholder="training-data-091116" required>
+              <span class="input-group-btn">
+                <button class="btn btn-default right ng-class:(downloadForm.$invalid || vm.downloadOptions.downloading)? 'disabled' : '';" type="submit">
+                  <i class="fa fa-fw fa-download" ng-show="!vm.downloadOptions.downloading"></i>
+                  <i class="fa fa-fw fa-spinner fa-spin" ng-show="vm.downloadOptions.downloading"></i>
+                </button>
+              </span>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12" ng-class="{'col-md-12': vm.hideDownload, 'col-sm-12': vm.hideDownload, 'col-md-8': !vm.hideDownload, 'col-sm-7':!vm.hideDownload }">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-edit"></i> Edit Response Metadata
+      </div>
+      <div class="panel-body">
+        <div class="form-group input-group">
+          <input type="text" class="form-control ng-class:(vm.syncing)?'disabled':'';" placeholder="Enter a response ID" data-ng-model="vm.responseSearch">
+          <!-- data-ng-change="vm.findResponses()"//comment out this line -->
+          <span class="input-group-btn">
+            <button class="btn btn-default" data-ng-click="vm.findResponses()" title="Search">
+              <i class="fa fa-search"></i>
+            </button>
+          </span>
+        </div>
+        <div class="well" data-ng-show="vm.responseSearchResults.length !== 1">
+          <span data-ng-show="vm.responseSearchResults.length == 0">No Results Found</span>
+          <span data-ng-repeat="result in vm.responseSearchResults">
+            <a href="#" class="btn btn-sm btn-default" data-ng-click="vm.makeResult(result.alt_id || result._id)">{{result.alt_id || result._id}}</a>
+          </span>
+        </div>
+        <form data-ng-submit="vm.updateMetadata()" data-ng-show="vm.responseSearchResults.length == 1">
+          <fieldset class="form-group col-xs-12">
+            <textarea class="form-control metadata-edit" data-ng-model="vm.responseSearchResult"></textarea>
+          </fieldset>
+          <fieldset class="form-group col-xs-2">
+            <label>Mark as Gold</label>
+            <input type="checkbox" class="form-control" data-ng-model="vm.responseSearchIsGold" ng-true-value="true" ng-false-value="false">
+          </fieldset>
+          <fieldset class="form-group col-xs-10">
+            <label>Gold Standard</label>
+            <select class="form-control" data-ng-model="vm.responseSearchGS" ng-options="gold as gold for gold in vm.responseSearchGolds"></select>
+          </fieldset>
+          <fieldset class="form-group col-xs-12">
+            <label>Alternate ID</label>
+            <input type="text" class="form-control" data-ng-model="vm.responseSearchIdCopy" placeholder="wrong school code, wrong name, etc.">
+            <p>Give a record an alternate ID to make it more easily searchable.</p>
+             <!-- Also use this function to designate records as Gold Standards (ex. <em>gold 1, gold 2, etc</em>). -->
+          </fieldset>
+          <fieldset class="form-group col-xs-12">
+            <input type="submit" value="Update" class="btn btn-success">
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

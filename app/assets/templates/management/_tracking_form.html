@@ -1,0 +1,25 @@
+<div>
+  <div class="modal-header cf">
+    <p class="lead no-margin left"><b>Field Tracking</b></p>
+    <button type="button" class="btn btn-default btn-circle right" title="Cancel" data-dismiss="modal" aria-hidden="true" ng-click="reset()">
+      <i class="fa fa-times fa-fw"></i>
+    </button>
+  </div>
+  <div class="modal-body cf">
+    <form ng-submit="submit()">
+      <fieldset class="form-group">
+        <label for="download.dataTypes">Show in Dashboard ({{count}})</label>
+        <div style="max-height:70vh;overflow-y:auto;">
+          <label class="form-control" style="height:100%;" data-ng-repeat="field in form.trackable_fields | orderBy:'key'">
+            <input type="checkbox" data-ng-model="field.is_tracked" ng-click="updateCount()">&nbsp;&nbsp;<span>{{field.key}}</span>
+          </label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <button type="submit" class="btn btn-primary">
+          <i class="fa fa-fw fa-spinner fa-spin" ng-show="saving"></i> Save
+        </button>
+      </fieldset>
+    </form>
+  </div>
+</div>

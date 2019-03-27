@@ -1,0 +1,5 @@
+<div>
+  <select class="form-control" ng-options="role.id as role.name for role in availableRoles" ng-model="newRole.id" ng-change="addRole()">
+    <option value="" style="display:none">-- choose a role --</option>
+  </select>
+</div>

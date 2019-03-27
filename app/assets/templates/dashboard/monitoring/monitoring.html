@@ -1,0 +1,93 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="cf">
+      <h1 class="left more-room-right"><i class="fa fa-eye fa-fw"></i> Monitoring Dashboard</h1>
+      <button class="btn right margin-top-15" ng-class="{'btn-primary': !vm.syncing, 'btn-warning': vm.syncing}" data-ng-click="vm.sync()">
+        <span data-ng-show="!vm.syncing"><i class="fa fa-fw fa-refresh"></i> Sync Data</span>
+        <span data-ng-show="vm.syncing"><i class="fa fa-fw fa-refresh fa-spin"></i> Syncing Data...</span>
+      </button>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row margin-top-15 equal">
+  <div class="col-lg-4 col-sm-6 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-calendar"></i> Calendar
+      </div>
+      <div class="panel-body">
+        <div data-moment-picker="vm.dataDate" data-ng-model="vm.data.dataDate" data-format="MMM DD YYYY" data-is-open="true" data-autoclose="false" data-inline="true" data-start-view="month" data-min-view="month" data-max-view="month" data-today="false" data-change="vm.changeDate()" data-min-date="vm.calendar[vm.calendar.length -1].date" data-max-date="vm.calendar[0].date" data-start-date="vm.calendar[0].date" data-selectable="vm.isSelectable(date, type)" data-calendar-data="vm.calendar">{{vm.dataDate}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-8 col-sm-6 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-tasks"></i> {{vm.surveygroup.name}} Progress
+      </div>
+      <div class="panel-body">
+        <div data-monitoring-progress data-surveys="vm.active" data-schools="vm.schoolCount"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row margin-top-15" ng-show="vm.noData">
+  <div class="col-xs-12">
+    <p class="lead">No Operational data. Please Sync data or collect some!</p>
+  </div>
+</div>
+<div class="row margin-top-15" ng-hide="vm.noData">
+  <div class="col-xs-12">
+    <ul class="nav nav-tabs margin-top-15">
+      <li class="active">
+        <a data-target="#table" data-toggle="tab" href="">
+          <i class="fa fa-fw fa-table"></i> Daily Data
+        </a>
+      </li>
+      <li ng-show="vm.showFlags">
+        <a data-target="#redflags" data-toggle="tab" href="">
+          <i class="fa fa-fw fa-flag"></i> Red Flags
+        </a>
+      </li>
+      <li>
+        <a data-target="#irr" data-toggle="tab" href="">
+          <i class="fa fa-fw fa-users"></i> Daily IRR
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content margin-top-15">
+      <p class="lead margin-sides cf">{{vm.dataDate}}
+        <a href="#" class="btn btn-primary right" data-ng-click="vm.downloadDay()" ng-class="{disabled: vm.downloading}" ng-hide="vm.hideDownload">
+          <i class="fa fa-fw fa-download" ng-show="!vm.downloading"></i>
+          <i class="fa fa-fw fa-spinner fa-spin" ng-show="vm.downloading"></i> Download
+        </a>
+      </p>
+      <div id="table" class="tab-pane fade in active">
+        <div data-monitoring-table data-surveys="vm.active"></div>
+      </div>
+      <div id="redflags" class="tab-pane fade in" ng-show="vm.showFlags">
+        <div data-monitoring-redflags data-pouch="vm.pouch" data-flags="vm.flags"></div>
+      </div>
+      <div id="irr" class="tab-pane fade in">
+        <div data-monitoring-irr data-pouch="vm.pouch" data-schemas="vm.schemas"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade clickable" id="monitoringTooltipModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+  <div class="modal-full">
+    <div data-monitoring-tooltip data-surveys="vm.schemas"></div>
+  </div>
+</div>
+<div class="modal fade clickable" id="monitoringViewModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+  <div class="modal-full">
+    <div data-monitoring-modal></div>
+  </div>
+</div>
+<div class="modal fade clickable" id="monitoringIrrModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+  <div class="modal-full">
+    <div data-response-compare data-compare="{}" data-task="'All Subtasks'"></div>
+  </div>
+</div>

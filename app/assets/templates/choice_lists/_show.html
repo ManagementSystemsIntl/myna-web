@@ -1,0 +1,8 @@
+<div>
+  <p class="margin-sides margin-bottom-0"><b>{{language.name}}</b> - {{list.name}}</p>
+  <ul class="fam-list">
+    <li data-ng-repeat="choice in list.choices | orderBy:'order'">
+      {{choice.value}} - {{choice.coded_value}}
+    </li>
+  </ul>
+</div>

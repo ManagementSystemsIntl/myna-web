@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Myna Web - <%= @client.capitalize %></title>
+  <base href="/app/">
+  <%= favicon_link_tag 'logo/16x16.png' %>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag "app" %>
+  <%= csrf_meta_tags %>
+</head>
+<body data-ng-app="formBuilder">
+  <div id="wrapper">
+    <% if user_signed_in? %>
+      <%= render 'layouts/navigation' %>
+      <div id="page-wrapper">
+        <%= render 'layouts/messages' %>
+        <flash-message class="flash">
+          <div class="modal-overlay {{flash.config.class}}">
+            <div role="alert" class="alert alert-{{flash.type}} {{flash.config.class}} alert-dismissible alertIn alertOut">
+              <div type="button" class="close" ng-show="flash.showClose" close-flash="{{flash.id}}">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+              </div>
+              <span dynamic="flash.text"></span>
+            </div>
+          </div>
+        </flash-message>
+        <%= yield %>
+      </div>
+    <% else %>
+      <%= render 'layouts/messages' %>
+      <%= yield %>
+    <% end %>
+    <%= render 'layouts/footer' %>
+  </div>
+</body>
+</html>

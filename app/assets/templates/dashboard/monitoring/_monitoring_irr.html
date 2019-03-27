@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-lg-4 col-sm-5 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-bar-chart fa-rotate-90"></i>  Frequency
+      </div>
+      <div class="panel-body">
+        <div class="cluster-box" style="width:100%;">
+          <svg class="cluster-chart" style="width:100%"></svg>
+          <button class="btn btn-sm btn-pill btn-primary right margin-sm margin-sides" ng-show="resettable">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-8 col-sm-7 col-xs-12">
+    <h2 class="ttip" ng-show="irrs.length > 0">Hover over an IRR pair</h2>
+    <svg ng-show="irrs.length > 0" class="svg-key" style="width:100%;"></svg>
+    <div class="box-container row equal"></div>
+  </div>
+</div>

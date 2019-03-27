@@ -1,0 +1,35 @@
+<div>
+  <div class="panel panel-info">
+    <div class="panel-heading cf">
+      <h4>
+        <i class="fa fa-list fa-fw"></i>  {{section.code}} <span ng-show="section.name">:</span>  {{section.name}}
+        <button type="button" ng-hide="$parent.$first && $parent.$last && !section.id" class="btn btn-default right" ng-class="{'btn-xs': !edit, 'btn-circle':edit}" data-ng-click="toggleEdit()" data-ng-attr-title="{{edit ? 'Cancel' : 'Edit Subtask'}}">
+          <span data-ng-show="edit"><i class="fa fa-times fa-fw"></i></span>
+          <span data-ng-hide="edit"><i class="fa fa-pencil fa-fw"></i> edit</span>
+        </button>
+      </h4>
+    </div>
+    <div class="panel-body cf">
+      <div data-ng-hide="edit">
+        <div data-section-show data-group="{{group}}" data-survey="{{survey.id}}" data-section="section"></div>
+      </div>
+      <div data-ng-show="edit">
+        <div data-section-form data-section="section" data-survey="survey"></div>
+      </div>
+    </div>
+    <div class="panel-footer cf" ng-hide="edit">
+      <a class="btn btn-show btn-sm left" ng-class="{'btn-success': section.skippable=='true', 'btn-danger': section.skippable!='true'}">
+        <span data-ng-show="section.skippable=='true'">Allow Skip</span>
+        <span data-ng-show="section.skippable!='true'">No Skipping</span>
+      </a>
+      <a class="btn btn-show btn-sm left margin-sides" ng-class="{'btn-success': section.is_publishable=='true', 'btn-danger': section.is_publishable!='true'}">
+        <span data-ng-show="section.is_publishable=='true'">Included in Publish</span>
+        <span data-ng-show="section.is_publishable!='true'">Excluded from Publish</span>
+      </a>
+      <a class="btn btn-default right" data-ui-sref="builder.sectionShow({client_id:client,group_id:group,survey_id:survey.id,id:section.id})" data-state-loading>
+        <span data-ng-show="section.question_count>0"><i class="fa fa-edit fa-fw"></i> Edit Contents ({{section.question_count}})</span>
+        <span data-ng-show="section.question_count==0"><i class="fa fa-plus-circle fa-fw"></i> Add Content</span>
+      </a>
+    </div>
+  </div>
+</div>

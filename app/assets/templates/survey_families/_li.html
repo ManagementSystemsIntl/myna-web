@@ -1,0 +1,15 @@
+<div>
+  <div class="cf">
+    <div class="right">
+      <button type="button" class="btn btn-default btn-xs" data-ng-click="openEdit()" title="Edit Family" data-toggle="modal" data-target="#familyFormModal">
+        <i class="fa fa-pencil fa-fw"></i> edit
+      </button>
+    </div>
+    <div class="left room-right" data-survey-family-show data-family="family"></div>
+    <a class="btn btn-xs right" ng-class="{'btn-success': !family.is_active, 'btn-danger': family.is_active}" data-ng-click="toggleActive()">
+      <i class="fa fa-fw fa-tablet"></i>
+      <span data-ng-show="family.is_active"> Deactivate</span>
+      <span data-ng-hide="family.is_active"> Activate</span>
+    </a>
+  </div>
+</div>

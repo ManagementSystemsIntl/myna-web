@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="lead">Welcome to the Myna EGRA Portal - <%= @client.capitalize %></h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 main-jumbo" style="background-image: url(<%= Rails.application.secrets.banner %>)"></div>
+</div>
+<div class="row equal">
+  <div class="col-sm-4 col-xs-12">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <%= link_to dashboard_path, :class => 'white' do %>
+          <i class="fa fa-dashboard fa-fw"></i> Dashboards
+        <% end %>
+      </div>
+      <div class="panel-body">
+        <p>Download data, train enumerators, monitor progress and results.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4 col-xs-12">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <%= link_to builder_path, :class => 'white' do %>
+          <i class="fa fa-wrench fa-fw"></i> Form Builder
+        <% end %>
+      </div>
+      <div class="panel-body">
+        <p>Build, edit, and deploy forms.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4 col-xs-12">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <%= link_to help_path, :class => 'white' do %>
+          <i class="fa fa-life-ring fa-fw"></i> Help Docs
+        <% end %>
+      </div>
+      <div class="panel-body">
+        <p>Ins and outs of cohort and content creation, dashboard configuration and use, and system administration.</p>
+      </div>
+    </div>
+  </div>
+</div>

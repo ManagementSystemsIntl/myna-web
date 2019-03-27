@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="cf">
+      <div class="left" data-section-show data-survey="{{SectionShowVM.survey}}" data-section="SectionShowVM.section"></div>
+      <h2 class="left margin-sides">
+        <button type="button" class="btn btn-default btn-xs" data-ng-click="SectionShowVM.toggleEdit()" title="Edit Subtask" data-toggle="modal" data-target="#sectionFormModal">
+          <i class="fa fa-pencil fa-fw"></i> edit
+        </button>
+      </h2>
+    </div>
+    <div class="modal fade" id="sectionFormModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header cf">
+            <p class="lead no-margin left"><b>Edit Subtask</b></p>
+            <button type="button" class="btn btn-default btn-circle right" data-ng-click="SectionShowVM.toggleEdit()" title="Cancel" data-dismiss="modal" aria-hidden="true">
+              <i class="fa fa-times fa-fw"></i>
+            </button>
+          </div>
+          <div class="modal-body cf">
+            <div data-section-form data-section="SectionShowVM.section" data-survey="SectionShowVM.survey"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-10 col-sm-9 col-xs-9">
+    <p class="lead">
+      <i class="fa fa-lightbulb-o fa-fw"></i> Subtask Contents
+      <button type="button" class="btn btn-sm btn-default btn-show right">
+        <i class="fa fa-arrows fa-fw"></i> Arrange Contents in desired order
+      </button>
+    </p>
+    <div class="panel panel-default panel-gray-bg">
+      <ul class="drag-list" data-as-sortable="SectionShowVM.dndListeners.drag" data-ng-model="SectionShowVM.models.questions">
+        <li data-ng-repeat="question in SectionShowVM.models.questions" data-as-sortable-item class="drag-li">
+          <div class="handle" data-as-sortable-item-handle></div>
+          <div class="cf" data-question-li data-question="question" data-survey="{{SectionShowVM.survey.id}}" data-section="{{SectionShowVM.section.id}}" data-code="{{SectionShowVM.section.code}}" data-direction="{{SectionShowVM.section.direction}}"></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-2 col-sm-3 col-xs-3">
+    <ul class="spawn affix" data-as-sortable="SectionShowVM.dndListeners.clone" data-ng-model="SectionShowVM.models.newQuestions">
+      <li data-ng-repeat="newQuestion in SectionShowVM.models.newQuestions" data-as-sortable-item>
+        <button class="btn btn-circle btn-yuuuge btn-primary" data-as-sortable-item-handle title="Drag into List to Add Content" ng-click="SectionShowVM.addNewQuestion()">
+          <i class="fa fa-fw fa-1x fa-plus"></i>
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>

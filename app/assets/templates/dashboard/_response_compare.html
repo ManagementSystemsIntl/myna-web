@@ -1,0 +1,16 @@
+<div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="left room-right no-margin">
+        <span>{{compare.response_info.enumerator_name}} {{compare.response_info.enumerator_id}}</span>
+        <span ng-show="gold"> - {{gold}}</span>
+      </h2>
+      <button type="button" class="btn btn-default btn-circle right" title="Cancel" data-dismiss="modal" aria-hidden="true">
+        <i class="fa fa-times fa-fw"></i>
+      </button>
+    </div>
+    <div class="modal-body cf">
+      <div ng-bind-html="contents"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<div class="row">
+  <h1><i class="fa fa-wrench fa-fw"></i> Question Type Builder</h1>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-6">
+    <p class="lead">New Question Type</p>
+    <div data-question-type-form data-question-type="QuestionTypeIndexVM.newQuestionType" data-question-categories="QuestionTypeIndexVM.questionCategories"></div>
+  </div>
+  <div class="col-md-6">
+    <p class="lead">Existing Question Types</p>
+    <div class="panel panel-default">
+      <div class="table-responsive">
+        <table class="table">
+          <tbody>
+            <tr data-ng-repeat="qt in QuestionTypeIndexVM.questionTypes">
+              <td><div data-question-type-li data-type="qt" data-categories="QuestionTypeIndexVM.questionCategories"></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

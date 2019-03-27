@@ -1,0 +1,26 @@
+<div>
+  <div class="table-responsive">
+    <p ng-show="loading">Loading...</p>
+    <table class="table table-striped table-hover monitoring-table" ng-show="!loading">
+      <thead>
+        <tr>
+          <th>School</th>
+          <th>Enumerators</th>
+          <th data-ng-repeat="survey in surveys | orderBy:'survey_info.name'">{{survey.survey_info.name}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-ng-repeat="school in schools">
+          <td>{{school.school_code}}</td>
+          <td>
+            <a data-ng-repeat="enumerator in school.enumerators" class='mon-enum btn btn-sm btn-default margin-sm' href="#" ng-click="showTooltipModal(enumerator.data,'Enumerator '+enumerator.enumerator_id)" data-toggle="modal" data-target="#monitoringTooltipModal">{{enumerator.enumerator_id}}</a>
+          </td>
+          <td data-ng-repeat="survey in surveys | orderBy:'survey_info.name'">
+            <a href="#" class="btn btn-sm btn-default margin-sm" ng-click="showTooltipModal(school.data[survey._id].data,'School '+school.school_code)" ng-show="school.data[survey._id].data.length > 0" data-toggle="modal" data-target="#monitoringTooltipModal">{{school.data[survey._id].count}}<span ng-show="school.data[survey._id].irr > 0"> ({{school.data[survey._id].irr}})</span></a>
+            <span ng-show="!school.data[survey._id] || school.data[survey._id].data.length == 0">0</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

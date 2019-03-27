@@ -1,0 +1,143 @@
+<div>
+  <div class="modal-header cf">
+    <p class="lead no-margin left"><b><i class="fa fa-fw fa-database"></i> CouchDB Views</b> - {{cohort.name}}</p>
+    <button type="button" class="btn btn-default btn-circle right" title="Cancel" data-dismiss="modal" aria-hidden="true" ng-click="reset()">
+      <i class="fa fa-times fa-fw"></i>
+    </button>
+  </div>
+  <div class="modal-body cf">
+    <ul class="nav nav-tabs margin-top-15">
+      <li class="active">
+        <a data-target="#responses" data-toggle="tab" href="">Responses</a>
+      </li>
+      <!-- <li>
+        <a data-target="#surveys" data-toggle="tab" href="">Surveys</a>
+      </li> -->
+      <li>
+        <a data-target="#templates" data-toggle="tab" href="">Templates</a>
+      </li>
+    </ul>
+    <div class="tab-content margin-top-15">
+      <div id="responses" class="tab-pane fade in active">
+        <div class="cf">
+          <span class="input-group right" style="width: 40% !important;">
+            <span class="input-group-addon">_design/</span>
+            <input type="text" class="form-control" placeholder="new-ddoc" ng-model="newResponsesDdoc">
+            <span class="input-group-addon btn" ng-click="addDdoc(newResponsesDdoc,'responses')" ng-class="{disabled: !newResponsesDdoc}">
+              <i class="fa fa-fw fa-plus"></i>
+            </span>
+          </span>
+        </div>
+
+        <ul class="plain-ul cf">
+          <li data-ng-repeat="ddoc in views.responses" class="cf">
+            <p class="lead ddoc-title">
+              <a href="#{{ddoc._id.split('/')[1]}}" data-toggle="collapse">_id: {{ddoc._id}}</a>
+              <span class="input-group right" style="width: 30% !important;">
+                <input type="text" class="form-control" placeholder="new-view" ng-model="newview">
+                <span class="input-group-addon btn" ng-click="addView(ddoc,this,'responses')">
+                  <i class="fa fa-fw fa-plus"></i>
+                </span>
+              </span>
+            </p>
+            <ul class="collapse plain-ul views-ul cf" id="{{ddoc._id.split('/')[1]}}">
+              <li ng-repeat="(key,view) in ddoc.views" class="cf">
+                <div class="cf" data-views-form data-ddoc="{{ddoc._id}}" data-type="{{'responses'}}" data-view="view" data-key="key"></div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <!-- <div id="surveys" class="tab-pane fade in">
+        <div class="cf">
+          <span class="input-group right" style="width: 40% !important;">
+            <span class="input-group-addon">_design/</span>
+            <input type="text" class="form-control" placeholder="new-ddoc" ng-model="newSurveysDdoc">
+            <span class="input-group-addon btn" ng-click="addDdoc(newSurveysDdoc,'surveys')" ng-class="{disabled: !newSurveysDdoc}">
+              <i class="fa fa-fw fa-plus"></i>
+            </span>
+          </span>
+        </div>
+        <ul class="plain-ul">
+          <li data-ng-repeat="ddoc in views.surveys">
+            <p class="lead ddoc-title cf">
+              _id: {{ddoc._id}}
+              <span class="input-group right" style="width: 30% !important;">
+                <input type="text" class="form-control" placeholder="new-view" ng-model="newview">
+                <span class="input-group-addon btn" ng-click="addView(ddoc,this,'surveys')" ng-class="{disabled: !newview}">
+                  <i class="fa fa-fw fa-plus"></i>
+                </span>
+              </span>
+            </p>
+            <ul class="plain-ul views-ul">
+              <li ng-repeat="(key,view) in ddoc.views">
+                <div data-views-form data-ddoc="{{ddoc._id}}" data-type="{{'surveys'}}" data-view="view" data-key="key"></div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div> -->
+      <div id="templates" class="tab-pane fade in">
+        <div class="col-md-12">
+          <pre>
+_design/red-flags
+  _view: testing-period
+  _map: function (doc){
+          if (!doc.response_info.training_entry && !doc.response_info.omit){
+            var consent = doc.response_info.has_consent || true;
+            var exit = doc.response_info.exit || false;
+
+            if (consent && !exit){
+              var modDate = doc.response_info.survey_started.split(" ").slice(1,4).join(" ");
+              var duration = new Date(doc.response_info.survey_finished) - new Date(doc.response_info.survey_started);
+              var time = duration/60000; // 60000 miliseconds in a minute, time is in minutes
+              // if survey_uuid == xxxxxxxx and time <> y, emit...
+              // emit([modDate,doc.response_info.enumerator_id], 1);
+            }
+          }
+        }
+
+  _view: autostops
+  _map: function (doc){
+          if (!doc.response_info.training_entry && !doc.response_info.omit){
+            var consent = doc.response_info.has_consent || true;
+            var exit = doc.response_info.exit || false;
+
+            if (consent && !exit){
+              var modDate = doc.response_info.survey_started.split(" ").slice(1,4).join(" ");
+              var autostops = [];
+              if (doc.hasOwnProperty("surveys")){
+                //families
+                for (var uuid in doc.surveys){
+                  for (var code in doc.surveys[uuid].sections){
+                    var keys = Object.keys(doc.surveys[uuid].sections[code]);
+                    for (var question in doc.surveys[uuid].sections[code]){
+                      if (question.match("_Auto_Stop")){
+                        autostops.push(doc.surveys[uuid].sections[code][question]);
+                      }
+                    }
+                  }
+                }
+              }else{
+                //non-families
+                for (var code in doc.sections){
+                  var keys = Object.keys(doc.sections[code]);
+                  for (var question in doc.sections[code]){
+                    if (question.match("_Auto_Stop")){
+                      autostops.push(doc.sections[code][question]);
+                    }
+                  }
+                }
+              }
+              var autostop_count = autostops.filter(function(d){return d === true || d === 1}).length;
+              // if survey_uuid == xxxxxxxx and autostop_count <> y, emit...
+              // emit([modDate,doc.response_info.enumerator_id], 1);
+            }
+          }
+        }
+          </pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

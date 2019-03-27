@@ -1,0 +1,7 @@
+<div>
+  <ul class="breadcrumbs" data-ng-show="crumbs.length > 0">
+    <li data-ng-repeat="crumb in crumbs" >
+        <a data-ui-sref="{{crumb.name}}({{crumb.paramObj}})"  data-state-loading><i class="fa fa-{{crumb.icon}} fa-fw"></i> {{crumb.resource.name}}</a>
+    </li>
+  </ul>
+</div>

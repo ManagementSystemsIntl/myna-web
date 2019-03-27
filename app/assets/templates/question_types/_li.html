@@ -1,0 +1,14 @@
+<div>
+  <div class="cf">
+    <div data-ng-hide="edit" class="left room-right" data-question-type-show data-question-type="type"></div>
+    <h3 class="right margin-sides">
+      <button type="button" class="btn btn-default btn-circle" data-ng-click="toggleEdit()" data-ng-attr-title="{{edit ? 'Cancel' : 'Edit'}}">
+        <i data-ng-show="edit" class="fa fa-times fa-fw"></i>
+        <i data-ng-hide="edit" class="fa fa-pencil fa-fw"></i>
+      </button>
+    </h3>
+    <div class="left room-right" data-ng-show="edit">
+      <div data-question-type-form data-question-type="type" data-question-categories="categories"></div>
+    </div>
+  </div>
+</div>

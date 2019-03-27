@@ -1,0 +1,27 @@
+<div>
+  <form name="languageForm" class="cf">
+    <div class="col-xs-12 table-responsive">
+      <table class="table table-no-border">
+        <tr>
+          <th><label>Label</label></th>
+          <th><label>Value</label></th>
+          <th>&nbsp;</th>
+        </tr>
+        <tr data-ng-repeat="box in options | orderBy:'order'" class="cf" ng-hide="box.markForDeletion">
+          <td class="form-group">
+            <input class="form-control" type="text"  data-ng-model="box.value" placeholder="{{box.placeholder || placeholder}}" required/>
+          </td>
+          <td class="form-group">
+            <input class="form-control" data-ng-model="box.coded_value" placeholder="{{$index}}" required type="text">
+          </td>
+          <td class="form-group">
+            <button data-ng-show="options.length>1" type="button" class="btn btn-danger btn-circle" data-ng-click="delete(box)" title="Remove" data-ng-show="options.length > 0"><i class="fa fa-trash-o fa-fw"></i></button>
+          </td>
+        </tr>
+      </table>
+      <div class="cf col-md-12">
+        <a class="right btn btn-xs btn-default right" data-ng-click="addOne()"><i class="fa fa-plus-circle fa-fw"></i> Add another Option</a>
+      </div>
+    </div>
+  </form>
+</div>

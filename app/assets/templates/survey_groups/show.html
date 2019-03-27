@@ -1,0 +1,257 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="cf">
+      <div class="left" data-survey-group-show data-group="vm.group"></div>
+      <h1 class="left margin-sides">
+        <button type="button" class="btn btn-default btn-xs" data-ng-click="vm.toggleEdit()" title="Edit Cohort" data-toggle="modal" data-target="#groupFormModal">
+          <i class="fa fa-pencil fa-fw"></i> edit
+        </button>
+      </h1>
+    </div>
+    <div class="modal fade" id="groupFormModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header cf">
+            <p class="lead no-margin left"><b>Edit Cohort</b></p>
+            <button type="button" class="btn btn-default btn-xs right" data-ng-click="vm.toggleEdit()" title="Cancel" data-dismiss="modal" aria-hidden="true">
+              <i class="fa fa-times fa-fw"></i> close
+            </button>
+          </div>
+          <div class="modal-body cf">
+            <div data-survey-group-form data-group="vm.group" data-languages="vm.languages"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row margin-top-15 equal">
+  <p class="col-xs-12 lead"><i class="fa fa-fw fa-files-o"></i> Surveys</p>
+  <div class="col-lg-8 col-sm-7 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-plus-circle"></i> Create new Survey
+      </div>
+      <div class="panel-body">
+        <div data-survey-form data-survey="vm.newSurvey" data-group="{{vm.group.id}}" data-languages="vm.languages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-sm-5 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-files-o"></i> Existing Surveys
+      </div>
+      <div class="panel-body">
+        <p data-ng-show="vm.surveys.length === 0">This Cohort currently has no Surveys.</p>
+        <div class="table-responsive" data-ng-show="vm.surveys.length > 0">
+          <table class="table">
+            <tr data-ng-repeat="survey in vm.surveys | orderBy:'name'">
+              <td>
+                <a data-ui-sref="builder.surveyShow({group_id:vm.group.id,id:survey.id})" data-state-loading>
+                  {{survey.name}} | <span ng-hide="survey.grade === 'NO_GRADE'">Grade {{survey.grade}}</span><span ng-show="survey.grade === 'NO_GRADE'">No Grade</span>
+                </a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr ng-show="vm.surveys.length > 0">
+<div class="row margin-top-15 equal" ng-show="vm.surveys.length > 0">
+  <p class="col-xs-12 lead"><i class="fa fa-fw fa-link"></i> Survey Families</p>
+  <div class="col-lg-8 col-sm-7 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-plus-circle"></i> Create new Survey Family
+      </div>
+      <div class="panel-body">
+        <div data-survey-family-form data-family="vm.newFamily" data-surveys="vm.surveys" data-group="vm.group.id"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-sm-5 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-link"></i> Existing Survey Families
+      </div>
+      <div class="panel-body">
+        <p data-ng-show="vm.families.length === 0">There are currently no Survey Families for this Cohort</p>
+        <div class="table-responsive" data-ng-show="vm.families.length > 0">
+          <table class="table">
+            <tr data-ng-repeat="family in vm.families">
+              <td>
+                <div data-survey-family-li data-family="family"></div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="familyFormModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header cf">
+            <p class="lead no-margin left"><b>Edit Survey Family</b></p>
+            <button type="button" class="btn btn-default btn-xs right" data-ng-click="vm.closeFamilyEdit()" title="Cancel" data-dismiss="modal" aria-hidden="true">
+              <i class="fa fa-times fa-fw"></i> close
+            </button>
+          </div>
+          <div class="modal-body cf">
+            <div data-survey-family-form data-family="vm.editFamily" data-surveys="vm.surveys" data-group="vm.group.id"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row margin-top-15 equal">
+  <p class="col-xs-12 lead"><i class="fa fa-fw fa-list"></i> Choice Lists</p>
+  <div class="col-lg-8 col-sm-7 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-plus-circle"></i> Add new Choice List
+      </div>
+      <div class="panel-body">
+        <div data-choice-list-form data-list="vm.newChoiceList" data-languages="vm.languages"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-sm-5 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-list"></i> Existing Choice Lists
+      </div>
+      <div class="panel-body">
+        <p data-ng-show="vm.choiceLists.length === 0">There are currently no Choice Lists for this Cohort.</p>
+        <div class="table-responsive" data-ng-show="vm.choiceLists.length > 0">
+          <table class="table">
+            <tr data-ng-repeat="list in vm.choiceLists">
+              <td>
+                <div data-choice-list-li data-list="list"></div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="choiceFormModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header cf">
+            <p class="lead no-margin left"><b>Edit Choice List</b></p>
+            <button type="button" class="btn btn-default btn-circle right" data-ng-click="vm.closeChoiceListEdit()" title="Cancel" data-dismiss="modal" aria-hidden="true">
+              <i class="fa fa-times fa-fw"></i>
+            </button>
+          </div>
+          <div class="modal-body cf">
+            <div data-choice-list-form data-list="vm.editChoiceList" data-languages="vm.languages"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row margin-top-15 equal">
+  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+         <i class="fa fa-fw fa-bolt"></i>  Form Type-Aheads
+      </div>
+      <div class="panel-body">
+        <fieldset class="form-group">
+          <label class="block">Schools <span ng-show="vm.schools.schools.length > 0">({{vm.schools.schools.length}})</span>
+            <i class="fa fa-fw fa-spinner fa-spin" ng-show="vm.csv.schools.loading"></i>
+            <!-- ng-show="vm.pouchSchools.schools.length > 0"
+            button below will display a modal where individual schools can be edited inline
+            <button class="btn btn-xs btn-default right" ng-hide="true">
+              <i class="fa fa-fw fa-pencil"></i> Edit
+            </button> -->
+          </label>
+          <div data-ng-csv-import class="csv-import margin-top-15"data-header="vm.csv.schools.header" data-separator="vm.csv.schools.separator" data-callback="vm.csvCallback" data-content="vm.csv.schools.content" data-result="vm.csv.schools.result"></div>
+          <div class="cf margin-md">
+            <span ng-show="vm.csv.schools.result">Records: {{vm.csv.schools.result.length}}</span>
+            <button class="btn btn-primary btn-xs right" ng-click="vm.updateTypeAhead('schools')" ng-class="{disabled: !vm.csv.schools.result}">Update</button>
+          </div>
+        </fieldset>
+        <fieldset class="form-group">
+          <label class="block">Pupils <span ng-show="vm.pupils.pupils.length > 0">({{vm.pupils.pupils.length}})</span>
+            <i class="fa fa-fw fa-spinner fa-spin" ng-show="vm.csv.pupils.loading"></i>
+            <!-- ng-show="vm.pouchPupils.pupils.length > 0"
+            button below will display a modal where individual pupils can be edited inline
+            <button class="btn btn-xs btn-default right" ng-hide="true">
+              <i class="fa fa-fw fa-pencil"></i> Edit
+            </button> -->
+          </label>
+          <div data-ng-csv-import class="csv-import margin-top-15"data-header="vm.csv.pupils.header" data-separator="vm.csv.pupils.separator" data-callback="vm.csvCallback" data-content="vm.csv.pupils.content" data-result="vm.csv.pupils.result"></div>
+          <div class="cf margin-md">
+            <span ng-show="vm.csv.pupils.result">Records: {{vm.csv.pupils.result.length}}</span>
+            <button class="btn btn-primary btn-xs right" ng-click="vm.updateTypeAhead('pupils')" ng-class="{disabled: !vm.csv.pupils.result}">Update</button>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-database"></i>  Database Configuration
+        <button type="button" class="btn btn-xs btn-default right" title="Edit CouchDB Credentials" data-toggle="modal" data-target="#pouchFormModal">
+          <i class="fa fa-pencil fa-fw"></i> edit
+        </button>
+      </div>
+      <div class="panel-body cf">
+        <div class="table-responsive">
+          <table class="table">
+            <tr>
+              <td>Couch Domain</td>
+              <td>{{vm.key.db_address}}</td>
+            </tr>
+            <tr>
+              <td>Couch Username</td>
+              <td>{{vm.key.username}}</td>
+            </tr>
+            <tr>
+              <td>Couch Password</td>
+              <td>{{vm.key.pwd}}</td>
+            </tr>
+            <tr>
+              <td>Couch Database Name</td>
+              <td>{{vm.key.db_name}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="pouchFormModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header cf">
+            <p class="lead no-margin left"><b>Edit CouchDB Credentials</b></p>
+            <button type="button" class="btn btn-default btn-circle right" data-ng-click="vm.cancelPouchKeyEdit()" title="Cancel" data-dismiss="modal" aria-hidden="true">
+              <i class="fa fa-times fa-fw"></i>
+            </button>
+          </div>
+          <div class="modal-body cf">
+            <div data-pouch-key-form data-key="vm.key"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-key"></i> Connection Key
+      </div>
+      <div class="panel-body">
+        <h1 class="text-center monospace">{{vm.key.external_key}}</h1>
+      </div>
+    </div>
+  </div>
+</div>

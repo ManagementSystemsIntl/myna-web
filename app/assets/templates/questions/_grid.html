@@ -1,0 +1,23 @@
+<div>
+  <table class="table" style="margin-bottom:5px;" ng-class="{'input-rtl': direction == 'rtl'}">
+    <tr>
+      <th ng-repeat="i in [1,2,3,4,5]">Col {{i}}</th>
+    </tr>
+    <tr ng-repeat="row in grid">
+      <td ng-repeat="cell in row track by $index" style="width:19%;">
+        <input type="text" ng-model="cell" class="form-control" ng-change="emitUpdate(cell, $index, $parent.$index)">
+      </td>
+      <td style="width:5%;">
+        <a ng-click="removeRow($index)" class="btn btn-circle btn-danger" type="button" ng-hide="$index === 0 && grid.length === 1">
+          <i class="fa fa-fw fa-trash"></i>
+        </a>
+      </td>
+    </tr>
+  </table>
+  <div class="margin-md">
+    <a ng-click="addRow()" class="btn btn-primary btn-xs" type="button">
+      <i class="fa fa-fw fa-plus-circle"></i> Add Row
+    </a>
+  </div>
+  <hr>
+</div>

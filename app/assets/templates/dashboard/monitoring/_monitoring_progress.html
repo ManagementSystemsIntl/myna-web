@@ -1,0 +1,20 @@
+<div>
+  <ul class="plain-ul">
+    <li>
+      <p>
+        <strong>Schools Visited</strong>
+        <span class="pull-right text-muted">
+          {{schools.count || 0}}<span data-ng-show="schools.target && schools.target > 0">/{{schools.target}}</span>
+        </span>
+      </p>
+    </li>
+    <li data-ng-repeat="survey in surveys | orderBy:'survey_info.name'">
+      <p>
+        <strong>{{survey.survey_info.name}}</strong>
+        <span class="pull-right text-muted">
+          {{survey.response_count || 0}}<span data-ng-show="survey.survey_info.targets.target && survey.survey_info.targets.target > 0">/{{survey.survey_info.targets.target}}</span> <span ng-show="survey.irr_count > 0 && (!survey.survey_info.targets.irr_target || survey.survey_info.targets.irr_target == 0)">({{survey.irr_count}} IRR)</span><span ng-show="survey.survey_info.targets.irr_target && survey.survey_info.targets.irr_target > 0">({{survey.irr_count}}/{{survey.survey_info.targets.irr_target}} IRR)</span>
+        </span>
+      </p>
+    </li>
+  </ul>
+</div>

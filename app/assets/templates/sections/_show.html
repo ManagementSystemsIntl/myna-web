@@ -1,0 +1,16 @@
+<div>
+  <div data-ng-show="is_li">
+    <div>
+      <p><b>Subtask Help</b>: <span ng-hide="section.hint" class="label label-default"><b>No help text provided.</b></span></p>
+      <p data-ng-show="section.hint"><span ng-bind-html="section.hint" ng-class="{'input-rtl': section.direction == 'rtl'}"></span></p>
+    </div>
+    <hr>
+    <div>
+      <p><b>Subtask AutoStop</b>: <span ng-hide="section.autostop > 0" class="label label-default"><b>No subtask auto stop configured.</b></span><span ng-show="section.autostop > 0">{{section.autostop}}</span></p>
+    </div>
+    <hr>
+  </div>
+  <div data-ng-hide="is_li">
+    <h2><i class="fa fa-list fa-fw"></i>  {{section.code}} :  {{section.name}}</h2>
+  </div>
+</div>

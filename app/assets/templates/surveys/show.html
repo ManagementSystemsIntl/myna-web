@@ -1,0 +1,112 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="cf">
+      <div class="left" data-survey-show data-survey="vm.survey"></div>
+      <h1 class="left margin-sides">
+        <button type="button" class="btn btn-default btn-xs" data-ng-click="vm.toggleEdit()" title="Edit Survey" data-toggle="modal" data-target="#surveyFormModal">
+          <i class="fa fa-pencil fa-fw"></i> edit
+        </button>
+      </h1>
+    </div>
+  </div>
+  <div class="modal fade" id="surveyFormModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header cf">
+          <p class="lead no-margin left"><b>Edit Survey</b></p>
+          <button type="button" class="btn btn-default btn-xs right" data-ng-click="vm.toggleEdit()" title="Cancel" data-dismiss="modal" aria-hidden="true">
+            <i class="fa fa-times fa-fw"></i> close
+          </button>
+        </div>
+        <div class="modal-body cf">
+          <div data-survey-form data-survey="vm.survey" data-languages="vm.languages"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-12">
+    <div>
+      <a class="btn btn-primary margin-sides margin-top-15" ng-class="{disabled: vm.sections.length == 0}" data-ng-click="vm.publishSchema()" title="Publish Schema"><i class="fa fa-upload fa-fw"></i> Publish Schema</a>
+      <a data-ng-show="vm.survey.last_published !== 'Never'" class="btn margin-sides margin-top-15 btn-primary" ng-click="vm.copySchema()" data-toggle="modal" data-target="#copySchemaModal"><i class="fa fa-fw fa-copy"></i> Copy Schema</a>
+      <a class="btn btn-warning margin-sides margin-top-15" title="Upload Schema" data-toggle="modal" data-target="#uploadSchemaModal"><i class="fa fa-align-left fa-rotate-180 fa-fw"></i> Upload Schema</a>
+      <a data-ng-show="vm.survey.last_published !== 'Never'" class="btn margin-sides margin-top-15" ng-class="{'btn-success': !vm.survey.is_active, 'btn-danger': vm.survey.is_active}" data-ng-click="vm.toggleActive()">
+        <i class="fa fa-fw fa-tablet"></i>
+        <span data-ng-show="vm.survey.is_active"> Remove from Tablet</span>
+        <span data-ng-hide="vm.survey.is_active"> Add to Tablet</span>
+      </a>
+      <p class="margin-top-15 margin-sides">Last Published:  {{vm.survey.last_published}} <span data-ng-show="vm.survey.last_version">(v.{{vm.survey.last_version}})</span></p>
+    </div>
+  </div>
+  <div class="modal fade" id="uploadSchemaModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header cf">
+          <p class="lead no-margin left"><b>Upload Schema</b></p>
+          <button type="button" class="btn btn-default btn-circle right" title="Cancel" data-dismiss="modal" aria-hidden="true">
+            <i class="fa fa-times fa-fw"></i>
+          </button>
+        </div>
+        <div class="modal-body cf">
+          <form ng-submit="vm.uploadSchema()">
+            <fieldset class="form-group">
+              <textarea ng-model="vm.schemaUpload" class="form-control schema-upload" placeholder="Paste a valid JSON survey schema here."></textarea>
+            </fieldset>
+            <fieldset class="form-group">
+              <input type="submit" class="btn btn-success" value="Upload" confirm="If valid JSON, uploading this Schema will overwrite the existing contents of this Survey.<br>Are you sure you want to upload this Schema?">
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="copySchemaModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header cf">
+          <p class="leadd no-margin left"><b>Copy Schema</b></p>
+          <button type="button" class="btn btn-default btn-circle right" title="Cancel" data-dismiss="modal" aria-hidden="true">
+            <i class="fa fa-times fa-fw"></i>
+          </button>
+        </div>
+        <div class="modal-body cf">
+          <form>
+            <fieldset class="form-group">
+              <textarea ng-model="vm.copy_schema" class="form-control schema-upload"></textarea>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-10 col-sm-9 col-xs-9">
+    <p class="lead">
+      <i class="fa fa-list fa-fw"></i> Subtasks
+      <button type="button" class="btn btn-sm btn-default btn-show right">
+        <i class="fa fa-arrows fa-fw"></i> Arrange Subtasks in desired order
+      </button>
+    </p>
+    <div class="panel panel-default panel-gray-bg">
+      <ul class="drag-list" data-as-sortable="vm.dndListeners.drag" data-ng-model="vm.models.sections">
+        <li data-ng-repeat="section in vm.models.sections" data-as-sortable-item class="drag-li">
+          <div class="handle" data-as-sortable-item-handle></div>
+          <div class="cf" data-section-li data-section="section" data-survey="vm.survey" data-group="{{vm.group}}"></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-2 col-sm-3 col-xs-3">
+    <ul class="spawn affix" data-as-sortable="vm.dndListeners.clone" data-ng-model="vm.models.newSections" is-disabled="vm.disableCopy" >
+      <li data-ng-repeat="newSection in vm.models.newSections" data-as-sortable-item>
+        <button class="btn btn-circle btn-yuuuge btn-primary" data-as-sortable-item-handle title="Drag into List to Add Section" ng-click="vm.addNewSection()">
+          <i class="fa fa-fw fa-1x fa-plus"></i>
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>

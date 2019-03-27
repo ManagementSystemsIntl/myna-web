@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1><i class="fa fa-fw fa-tablet"></i> Manage Devices</h1>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-12">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Serial Number</th>
+            <th>App Version</th>
+            <th>Survey Group</th>
+            <th>Connection Code</th>
+            <th>Last Connected</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-ng-repeat="device in vm.devices">
+            <td>{{device.serial_number}}</td>
+            <td>{{device.app_version}}</td>
+            <td>{{device.survey_group.name}}</td>
+            <td>{{device.external_code}}</td>
+            <td>{{device.last_connection.created_at | date:'MM/dd/yyyy hh:mm'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

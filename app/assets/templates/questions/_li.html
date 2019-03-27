@@ -1,0 +1,28 @@
+<div>
+  <div class="panel panel-info">
+    <div class="panel-heading cf">
+      <h4>
+        <span data-ng-hide="edit">
+          <i data-ng-show="question_type.has_number" class="fa fa-question-circle fa-fw"></i>
+          <i data-ng-show="question_type.name=='readonly_text'" class="fa fa-comment fa-fw"></i>
+          <i data-ng-show="question_type.name=='grid'" class="fa fa-th fa-fw"></i>
+          <i data-ng-show="question_type.name=='consent'" class="fa fa-exclamation-circle fa-fw"></i>
+          <i data-ng-show="question_type.name=='timer'" class="fa fa-clock-o fa-fw"></i>&nbsp;
+          <span data-ng-show="question_type.has_number">{{question.question_number}}. </span>{{question_type.descriptive}}
+        </span>
+        <button type="button" ng-hide="$parent.$first && $parent.$last && !question.id" class="btn btn-default right" ng-class="{'btn-xs': !edit, 'btn-circle':edit}" data-ng-click="toggleEdit()" data-ng-attr-title="{{edit ? 'Cancel' : 'Edit Content'}}">
+          <span data-ng-show="edit"><i class="fa fa-times fa-fw"></i></span>
+          <span data-ng-hide="edit"><i class="fa fa-pencil fa-fw"></i> edit</span>
+        </button>
+      </h4>
+    </div>
+    <div class="panel-body cf">
+      <div data-ng-hide="edit">
+        <div data-question-show data-question="question" data-code="{{code}}"></div>
+      </div>
+      <div data-ng-show="edit">
+        <div data-question-form data-question="question" data-survey="{{survey}}" data-section="{{section}}" data-code="{{code}}" data-direction="{{direction}}"></div>
+      </div>
+    </div>
+  </div>
+</div>

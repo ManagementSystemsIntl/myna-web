@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Myna Web - <%= @client.capitalize %></title>
+  <%= favicon_link_tag 'logo/16x16.png' %>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <div id="wrapper">
+    <% if user_signed_in? %>
+      <%= render 'layouts/navigation' %>
+    <% end %>
+    <div id="page-wrapper" class="no-margin">
+      <%= render 'layouts/messages' %>
+      <%= yield %>
+    </div>
+    <%= render 'layouts/footer' %>
+  </div>
+</body>
+</html>

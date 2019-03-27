@@ -1,0 +1,72 @@
+<ul class="nav">
+  <li data-ng-show="lt == 'builder'" class="text-center"><a data-ui-sref="builder.index"><i class="fa fa-fw fa-wrench"></i> Form Builder Navigation</a></li>
+  <li data-ng-show="lt == 'dashboard'" class="text-center"><a data-ui-sref="dashboard.index"><i class="fa fa-fw fa-dashboard"></i> Dashboards Navigation</a></li>
+  <li data-ng-show="lt == 'manage'" class="text-center"><a href="#"><i class="fa fa-fw fa-gears"></i> System Managment Navigation</a></li>
+  <li data-ng-show="lt == 'help'" class="text-center"><a href="#"><i class="fa fa-fw fa-life-ring"></i> Help Docs Navigation</a></li>
+
+
+  <li data-ng-show="lt == 'builder'" data-ng-repeat="group in trees">
+    <a data-ui-sref="builder.groupShow({id: group.id})" data-state-loading class="main-link"><i class="fa fa-users fa-fw"></i> {{group.name}}</a>
+    <a class="caret-link" ng-click="toggleDropdown(group.id,lt)" ng-show="group.surveys.length > 0">
+      <i ng-hide="dropdowns['sg'+group.id][lt]" class="fa fa-angle-right fa-fw"></i>
+      <i ng-show="dropdowns['sg'+group.id][lt]" class="fa fa-angle-down fa-fw"></i>
+    </a>
+    <ul class="nav nav-second-level" ng-show="dropdowns['sg'+group.id][lt]">
+      <li data-ng-repeat="survey in group.surveys track by $index">
+        <a class="main-link" data-ui-sref="builder.surveyShow({group_id: group.id, id:survey.id})" data-state-loading><i class="fa fa-file-o fa-fw"></i> {{survey.name}}</a>
+      </li>
+    </ul>
+  </li>
+
+  <li data-ng-show="lt == 'dashboard'" data-ng-repeat="group in trees">
+    <a class="main-link" data-ui-sref="dashboard.groupShow({id:group.id})" data-state-loading><i class="fa fa-users fa-fw"></i> {{group.name}}</a>
+    <a class="caret-link" ng-click="toggleDropdown(group.id,lt)">
+      <i ng-hide="dropdowns['sg'+group.id][lt]" class="fa fa-angle-right fa-fw"></i>
+      <i ng-show="dropdowns['sg'+group.id][lt]" class="fa fa-angle-down fa-fw"></i>
+    </a>
+    <ul ng-show="dropdowns['sg'+group.id][lt]" class="nav nav-second-level">
+      <li>
+        <a data-ui-sref="dashboard.training({id:group.id})" data-state-loading>
+          <i class="fa fa-fw fa-bell-o"></i> Training
+        </a>
+      </li>
+      <li>
+        <a data-ui-sref="dashboard.monitoring({id:group.id})" data-state-loading>
+          <i class="fa fa-fw fa-eye"></i> Monitoring
+        </a>
+      </li>
+    </ul>
+  </li>
+
+  <li data-ng-show="lt == 'manage'">
+    <a data-ui-sref="manage.devices" data-state-loading><i class="fa fa-fw fa-tablet"></i> Manage Devices</a>
+    <a data-ui-sref="manage.forms" data-state-loading><i class="fa fa-fw fa-files-o"></i> Manage Forms</a>
+    <a data-ui-sref="manage.users" data-state-loading><i class="fa fa-fw fa-users"></i> Manage Users</a>
+  </li>
+
+  <li data-ng-show="lt == 'help' && showHelp.fb">
+    <a href="#form-builder" style="border-bottom:1px solid gray"><i class="fa fa-fw fa-wrench"></i> Form Builder</a>
+    <a href="#cohorts"><i class="fa fa-fw fa-users"></i> Cohorts</a>
+    <a href="#surveys"><i class="fa fa-fw fa-file-o"></i> Surveys</a>
+    <a href="#subtasks"><i class="fa fa-fw fa-list"></i> Subtasks</a>
+    <a href="#questions"><i class="fa fa-fw fa-lightbulb-o"></i> Subtask Contents</a>
+    <a href="#conditionals"><i class="fa fa-fw fa-asterisk"></i> Visibility Conditions</a>
+    <a href="#families"><i class="fa fa-fw fa-link"></i> Survey Families</a>
+    <a href="#choiceLists"><i class="fa fa-fw fa-list"></i> Choice Lists</a>
+  </li>
+  <li data-ng-show="lt == 'help' && showHelp.dash">
+    <a href="#dashboards" style="border-bottom:1px solid gray"><i class="fa fa-fw fa-dashboard"></i> Dashboards</a>
+    <a href="#downloads" ng-show="showHelp.data"><i class="fa fa-fw fa-file-excel-o"></i> Data Download</a>
+    <a href="#omit"><i class="fa fa-fw fa-eraser"></i> Omit/Restore Records</a>
+    <a href="#metadata"><i class="fa fa-fw fa-edit"></i> Edit Response Metadata</a>
+    <a href="#training"><i class="fa fa-fw fa-bell"></i> Training Dashboard</a>
+    <a href="#monitoring"><i class="fa fa-fw fa-eye"></i> Monitoring Dashboard</a>
+  </li>
+  <li data-ng-show="lt == 'help' && showHelp.mgmt">
+    <a href="#management" style="border-bottom:1px solid gray"><i class="fa fa-fw fa-gears"></i> System Management</a>
+    <a href="#devices"><i class="fa fa-fw fa-tablet"></i> Manage Devices</a>
+    <a href="#forms"><i class="fa fa-fw fa-files-o"></i> Manage Forms</a>
+    <a href="#users"><i class="fa fa-fw fa-users"></i> Manage Users</a>
+  </li>
+
+</ul>

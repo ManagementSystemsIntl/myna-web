@@ -1,0 +1,37 @@
+<div>
+  <div data-ng-show="attributes.trackable && attributes.trackable.value == 'true'">
+    <button class="btn btn-block btn-show btn-danger"><b>TRACKING RESPONSES</b></button>
+  </div>
+  <div class="margin-top-15">
+    <p data-ng-show="attributes.item_name"><b>Item Name</b>: {{code}}_{{attributes.item_name.value}}</p>
+    <p data-ng-show="question_type.has_number"><b>Question Code</b>:  {{code}}_{{question.question_number}}</p>
+    <p data-ng-show="attributes.prompt"><b>Prompt</b>:  <span ng-bind-html="attributes.prompt.value" ng-class="{'input-rtl': question.direction == 'rtl'}"></span></p>
+    <p data-ng-show="attributes.minimum && attributes.maximum"><b>Min</b>: {{attributes.minimum.value}}, <b>Max</b>: {{attributes.maximum.value}}</p>
+    <p data-ng-show="attributes.grid_string"><b>Grid Contents</b>:</p>
+    <div ng-show="attributes.grid_string">
+      <table class="table" ng-class="{'input-rtl': question.direction == 'rtl'}">
+        <tr ng-repeat="row in gridRender">
+          <td style="width:20%;border:1px solid;text-align:center;" ng-repeat="cell in row track by $index">{{cell}}</td>
+        </tr>
+      </table>
+    </div>
+    <!-- <h1 data-ng-show="attributes.grid_string" ng-class="{'input-rtl': question.direction == 'rtl'}">{{attributes.grid_string.value}}</h1> -->
+    <p data-ng-show="attributes.grid_width"><b>Items per Row</b>: {{attributes.grid_width.value}}</p>
+    <p data-ng-show="attributes.grid_timer"><b>Timer</b>: <span ng-show="attributes.grid_timer.value > 0">{{attributes.grid_timer.value}} seconds</span><span ng-show="attributes.grid_timer.value === -1">none</span></p>
+    <p data-ng-show="attributes.grid_autostop"><b>Grid AutoStop</b>: <span ng-show="attributes.grid_autostop.value > 0">{{attributes.grid_autostop.value}}</span><span ng-show="attributes.grid_autostop.value === -1">none</span></p>
+    <p data-ng-show="attributes.display_as"><b>Display As</b>: {{display_names[attributes.display_as.value]}}</p>
+    <p data-ng-show="attributes.choice && !choice_list"><b>Options</b>:
+      <ul data-ng-show="attributes.choice && !choice_list"><li data-ng-repeat="choice in attributes.choice | orderBy:'order'">{{choice.value}} : {{choice.coded_value}}</li></ul>
+    </p>
+    <p data-ng-show="attributes.choice && choice_list"><b>Choice List</b>: {{choice_list.name}}
+      <ul><li data-ng-repeat="choice in choice_list.choices | orderBy:'order'">{{choice.value}} : {{choice.coded_value}}</li></ul>
+    </p>
+    <p ng-show="attributes.condition && attributes.condition.value">
+      <b>Visibility Condition</b>: <code>{{attributes.condition.value}}</code>
+    </p>
+    <!-- <p data-ng-show="attributes.show_after">Show if more than {{attributes.show_after.value}} words are read</p>
+    <p data-ng-show="attributes.show_if.value == 'true'">
+      Show if <b>{{attributes.show_if_question_number.value}} {{attributes.show_if_qualifier.value}} {{attributes.show_if_value.value}}</b>
+    </p> -->
+  </div>
+</div>

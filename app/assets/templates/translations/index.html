@@ -1,0 +1,65 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="cf">
+      <h1><i class="fa fa-language fa-fw"></i> Translations</h1>
+      <div class="left room-right" data-survey-show data-survey="TranslationVM.survey"></div>
+      <h1 class="left margin-sides">
+        <button type="button" class="btn btn-default btn-circle" data-ng-click="TranslationVM.toggleEdit()" data-ng-attr-title="{{TranslationVM.edit ? 'Cancel' : 'Edit'}}">
+          <i data-ng-show="TranslationVM.edit" class="fa fa-times fa-fw"></i>
+          <i data-ng-hide="TranslationVM.edit" class="fa fa-pencil fa-fw"></i>
+        </button>
+      </h1>
+    </div>
+    <div data-ng-show="TranslationVM.edit">
+      <div data-survey-form data-survey="TranslationVM.survey"></div>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="translation-table">
+        <div class="bottom-table">
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="translation-id">Question Attribute</th><th class="translation-default">{{TranslationVM.defaultLanguage.name}}</th>
+                <th class="invisible" data-ng-repeat="language in TranslationVM.otherLanguages">{{language.name}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-ng-repeat="attribute in TranslationVM.qa">
+                <td class="translation-id">{{attribute.section_code}}_{{attribute.question.order+1}} {{attribute.name}}:</td>
+                <td class="translation-default">{{attribute.value}}</td>
+                <td class="translation-input invisible" data-ng-repeat="translation in attribute.translations" data-ng-hide="translation.language_id == TranslationVM.defaultLanguage.id">
+                  <input type="text" class="form-control">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="top-table">
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="invisible translation-id">Question Attribute</th><th class="invisible translation-default">{{TranslationVM.defaultLanguage.name}}</th>
+                <th data-ng-repeat="language in TranslationVM.otherLanguages">{{language.name}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-ng-repeat="attribute in TranslationVM.qa">
+                <td class="translation-id invisible">{{attribute.section_code}}_{{attribute.question.order+1}} {{attribute.name}}:</td>
+                <td class="translation-default invisible">{{attribute.value}}</td>
+                <td class="translation-input" data-ng-repeat="translation in attribute.translations" data-ng-hide="translation.language_id == TranslationVM.defaultLanguage.id">
+                  <div data-translator data-translation="translation" data-initial="{{translation.value}}"></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

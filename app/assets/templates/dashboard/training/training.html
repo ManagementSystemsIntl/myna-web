@@ -1,0 +1,76 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="cf">
+      <h1 class="left more-room-right"><i class="fa fa-bell-o fa-fw"></i> Training Dashboard</h1>
+      <button class="btn right margin-top-15" ng-class="{'btn-primary': !vm.syncing, 'btn-warning': vm.syncing}" data-ng-click="vm.sync()">
+        <span data-ng-show="!vm.syncing"><i class="fa fa-fw fa-refresh"></i> Sync Data</span>
+        <span data-ng-show="vm.syncing"><i class="fa fa-fw fa-refresh fa-spin"></i> Syncing Data...</span>
+      </button>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row margin-top-15 equal">
+  <div class="col-lg-4 col-sm-5 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-user"></i> Enumerator Lookup
+      </div>
+      <div class="panel-body">
+        <div class="input-group">
+          <input type="text" class="form-control" ng-model="vm.enumerator_search.search">
+          <span class="input-group-btn">
+            <button type="button" ng-show="vm.enumerator_search.results.length == 0" class="btn btn-default" data-ng-click="vm.searchEnumerator()">
+              <i class="fa fa-fw fa-search"></i>
+            </button>
+            <button type="button" class="btn btn-default" ng-show="vm.enumerator_search.results.length > 0" data-ng-click="vm.resetFilters()">
+              <i class="fa fa-fw fa-times"></i>
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-filter"></i> Filters
+      </div>
+      <div class="panel-body">
+        <fieldset class="form-group" ng-disabled="vm.activeSurveys.length == 0 || vm.fetchingSurveys" ng-hide="vm.enumerator_search.results.length > 0">
+          <label>Survey <i class="fa fa-fw fa-spinner fa-spin" ng-show="vm.fetchingSurveys"></i></label>
+          <select class="form-control" ng-change="vm.updateDataset(vm.focusSurvey)" ng-model="vm.focusSurvey" ng-options="survey as survey.survey_info.name+' (v.'+survey.survey_info.iteration+')' group by survey.doc_type for survey in vm.activeSurveys">
+            <option value="" style="display:none">--- pick a survey ---</option>
+          </select>
+        </fieldset>
+        <fieldset class="form-group" ng-disabled="vm.focusGolds.length == 0 || vm.fetchingGolds" ng-hide="vm.enumerator_search.results.length > 0">
+          <label>Gold Standard <i class="fa fa-fw fa-spinner fa-spin" ng-show="vm.fetchingGolds"></i></label>
+          <select class="form-control" ng-change="vm.updateGold(vm.focusGold)" ng-model="vm.focusGold" ng-options="gold as gold for gold in vm.focusGolds" ng-class="{disabled: !vm.focusSurvey}">
+            <option value="" style="display:none">--- pick a gold standard ---</option>
+          </select>
+        </fieldset>
+        <fieldset class="form-group" ng-disabled="vm.subtasks.length == 0 || vm.fetchingSubtasks">
+          <label>Subtask <i class="fa fa-fw fa-spinner fa-spin" ng-show="vm.fetchingSubtasks"></i></label>
+          <select class="form-control" ng-change="vm.updateChart()" ng-model="vm.subtask" ng-options="task as task for task in vm.subtasks" ng-class="{disabled: vm.enumerator_search.results.length === 0 && !vm.focusGold}">
+            <option value="" style="display:none">--- pick a subtask ---</option>
+          </select>
+        </fieldset>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-bar-chart fa-rotate-90"></i> Frequency
+      </div>
+      <div class="panel-body no-padding">
+        <div data-training-cluster style="width:100%" data-block="vm.blockCharts"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-8 col-sm-7 col-xs-12">
+    <div data-training-chart style="width:100%" data-block="vm.blockCharts"></div>
+  </div>
+</div>
+
+<div class="modal fade clickable" id="trainingViewModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+  <div class="modal-full">
+    <div data-response-compare data-compare="vm.focusData" data-gold="vm.focusGold" data-task="vm.subtask" data-survey="vm.focusSurvey"></div>
+  </div>
+</div>

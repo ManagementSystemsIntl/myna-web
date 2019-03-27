@@ -1,0 +1,5 @@
+<div>
+  <h1><i class="fa fa-file-o fa-fw"></i> {{survey.name}}</h1>
+  <p class="lead"><span ng-hide="survey.grade === 'NO_GRADE'">Grade {{survey.grade}}</span><span ng-show="survey.grade === 'NO_GRADE'">No Grade</span><span data-ng-show="survey.gold_standards"> | Gold Standard {{survey.gold_standards}}</span>
+  </p>
+</div>

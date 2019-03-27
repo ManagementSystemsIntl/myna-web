@@ -1,0 +1,63 @@
+<div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="left room-right no-margin">
+        {{title}}
+      </h2>
+      <button type="button" class="btn btn-default btn-circle right" title="Cancel" data-dismiss="modal" aria-hidden="true">
+        <i class="fa fa-times fa-fw"></i>
+      </button>
+    </div>
+    <div class="modal-body cf">
+      <div ng-repeat="survey in listedSurveys">
+        <p class="lead">{{survey.survey_info.name}}</p>
+        <div class="table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Survey ID</th>
+                <th>School Code</th>
+                <th>Enumerator Name</th>
+                <th>Enumerator ID</th>
+                <th ng-repeat="field in survey.editable">{{field.question_code}}</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="response in survey.modal_responses">
+                <td>
+                  <a href="#" data-toggle="modal" data-target="#monitoringViewModal" ng-click="updateModal(response)">
+                    {{response._id}}<span ng-show="response.response_info.irr_entry"> (IRR)</span>
+                  </a>
+                </td>
+                <td>
+                  <input type="text" class="form-control" ng-model="response.response_info.school_code">
+                </td>
+                <td>
+                  <input type="text" class="form-control" ng-model="response.response_info.enumerator_name">
+                </td>
+                <td>
+                  <input type="text" class="form-control" ng-model="response.response_info.enumerator_id">
+                </td>
+                <td ng-repeat="field in survey.editable">
+                  <div ng-if="survey.doc_type=='schema'">
+                    <input type="text" class="form-control" ng-class="{disabled: !response.sections.hasOwnProperty(field.section_code) || !response.sections[field.section_code].hasOwnProperty(field.question_code)}" ng-model="response.sections[field.section_code][field.question_code]">
+                  </div>
+                  <div ng-if="survey.doc_type=='schema-family'">
+                    <input type="text" class="form-control" ng-class="{disabled: !response.surveys.hasOwnProperty(field.survey_uuid) || !response.surveys[field.survey_uuid].sections.hasOwnProperty(field.section_code) || !response.surveys[field.survey_uuid].sections[field.section_code].hasOwnProperty(field.question_code)}" ng-model="response.surveys[field.survey_uuid].sections[field.section_code][field.question_code]">
+                   </div>
+                </td>
+                <td>
+                  <button ng-click="saveEdit(response,survey)" class="btn btn-default btn-circle  ng-class:response.saving ? 'disabled' : '';">
+                    <i ng-show="!response.saving" class="fa fa-fw fa-save"></i>
+                    <i ng-show="response.saving" class="fa fa-fw fa-refresh fa-spin"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
