@@ -11,7 +11,7 @@ The Myna-web form builder is a web based application built in Ruby on Rails and 
 To run the form builder the following requirements need to be met by the server:
 
 * Ruby 2.3.3+
-* Rails 4.2.4
+* Rails 4.2.11.1
 * Postgres 9+
 * Nginx
 * Graphviz
