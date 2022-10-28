@@ -20,7 +20,7 @@
     vm.calendar = monitoring.calendar;
     vm.flags = monitoring.flags;
     vm.showFlags = Object.keys(monitoring.flags).length > 0;
-    vm.dataDate = monitoring.calendar[0].key;
+    vm.dataDate = monitoring.calendar[0] ? monitoring.calendar[0].key : null;
     vm.dayData = monitoring.dayData;
     vm.syncing = false;
     vm.sync = sync;
@@ -30,6 +30,10 @@
     vm.data = {};
     vm.downloadDay = downloadDay;
     vm.noData = vm.calendar.length === 0;
+    vm.allDays = false;
+    setSchoolTarget();
+    
+
 
     $scope.$on("mon-table-click", function(evt, data, title, flag){
       $scope.$broadcast("update-mon-modal", data, title, flag);
@@ -121,7 +125,11 @@
     }
 
     function updateTable(){
-      var options = {startkey: [vm.dataDate], endkey:[vm.dataDate, {}], include_docs: true, reduce: false};
+      if (vm.allDays) {
+        var options = {include_docs: true, reduce: false};
+      } else {
+        var options = {startkey: [vm.dataDate], endkey:[vm.dataDate, {}], include_docs: true, reduce: false};
+      }
       return vm.pouch.queryResponses("monitoring/operational-date-survey", options).then(function(res){
         vm.dayData = res;
         $scope.$broadcast("update-monitoring-table", res);
@@ -151,6 +159,12 @@
         vm.downloading = false;
       });
 
+    }
+
+    function setSchoolTarget() {
+      if ( vm.surveygroup.school_count && vm.surveygroup.school_count > 0 ) {
+        vm.schoolCount["target"] = vm.surveygroup.school_count;
+      }
     }
 
   }

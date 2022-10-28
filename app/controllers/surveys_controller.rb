@@ -163,6 +163,6 @@ class SurveysController < ApiController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def survey_params
-      params.require(:survey).permit(:survey_type, :survey_group_id, :grade, :name, :is_active, :languages, :gold_standards)
+      params.require(:survey).permit(:survey_type, :survey_group_id, :grade, :name, :is_active, :languages, :gold_standards, :show_responses)
     end
 end

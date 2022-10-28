@@ -165,6 +165,7 @@
           scope.question.choice_list_id = null;
           removeCustomOptions = false;
         }
+
         if (scope.question.hasOwnProperty("id")){
           updateQuestion().then(function(res){
             return updateAttributes(removeCustomOptions);
@@ -223,7 +224,7 @@
 
       function updateAttribute(attribute, removeChoices){
         // delete choice attributes if a choice list is being used
-        if (removeChoices && attribute.name == "choice"){
+        if (attribute.name == "choice" && (removeChoices || attribute.markForDeletion) ){
           if (attribute.hasOwnProperty("id")){
             return attribute.$delete({id: attribute.id});
           }else{

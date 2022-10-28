@@ -48,6 +48,7 @@
     vm.toggleEdit = toggleEdit;
     vm.toggleActive = toggleActive;
     vm.uploadSchema = uploadSchema;
+    vm.onSurveyDelete = onSurveyDelete;
 
     // listeners
     $scope.$on("section-created", function(res,section){
@@ -88,7 +89,7 @@
       angular.element(".modal-backdrop").hide();
       $rootScope.$broadcast("nav:survey-deleted", angular.copy(vm.survey));
       if (vm.survey.is_active){
-        return activateInPouch(vm.survey.uuid,false,true).then(function(){
+        return onSurveyDelete().then(function(){
           return $state.go("builder.groupShow", {id:$stateParams.group_id});
         });
       }else{
@@ -152,6 +153,7 @@
           json_schema._id = json_schema.survey_info.uuid;
           json_schema.active = vm.survey.is_active;
           json_schema.survey_info.gold_standards = vm.survey.gold_standards;
+          json_schema.show_responses = vm.survey.show_responses;
         } catch(err) {
           console.log(res.schema)
           Flash.create("danger", "<i class=\"fa fa-fw fa-warning\"></i> Survey Schema is not valid JSON.", 3000, {class:"full-screen"});
@@ -246,6 +248,13 @@
           $scope.$broadcast("changed-active-status",true);
         });
       }
+    }
+
+    function onSurveyDelete(){
+      return vm.pouch.changeStatus(vm.survey.uuid, false).then(function(res){
+      }).then(function(survey){
+        $scope.$broadcast("changed-active-status",false);
+      });
     }
 
     function updateSurvey(){

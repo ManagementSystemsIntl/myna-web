@@ -18,6 +18,10 @@
         <input class="form-control" type="password" data-ng-model="group.couch_pwd" required>
       </fieldset>
     </div>
+    <fieldset class="form-group col-xs-12">
+      <label>Number of Schools (overrides count from type-ahead upload)</label>
+      <input class="form-control" type="number" step="1" min="0" data-ng-model="group.school_count">
+    </fieldset>
     <fieldset class="form-group col-xs-12 cf">
       <label for="group.languages">Languages</label>
       <div data-language-form data-languages="languages" data-group="{{group.id}}"></div>

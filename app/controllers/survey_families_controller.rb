@@ -97,6 +97,6 @@ class SurveyFamiliesController < ApiController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def survey_family_params
-      params.require(:survey_family).permit(:name, :survey_group_id, :surveys, :is_active, :gold_standards)
+      params.require(:survey_family).permit(:name, :survey_group_id, :surveys, :is_active, :gold_standards, :show_responses)
     end
 end

@@ -6,6 +6,12 @@
         <input class="form-control" type="text" data-ng-model="survey.name" required placeholder="Main Tool A"/>
       </fieldset>
 
+      <fieldset class="col-md-12 col-sm-12 col-xs-12 form-group radio-toggle c">
+        <label for="survey.show_responses">Show Responses in Mobile App?</label>
+        <label class="toggle first form-control"><input type="radio" data-ng-model="survey.show_responses" data-ng-value="true"><span>Yes</span></label>
+        <label class="toggle last form-control"><input type="radio" data-ng-model="survey.show_responses" data-ng-value="false"><span>No</span></label>
+      </fieldset>
+
       <fieldset class="form-group col-md-6 col-sm-6 col-xs-6 radio-toggle cf">
         <label for="survey.grade">Grade(s)</label>
         <label class="toggle form-control width-20" data-ng-repeat="grade in grades">

@@ -36,12 +36,24 @@ Rails 5.2+ uses Credendtials to store environment variables. Use `EDITOR='YOUR_T
 * DOMAIN_NAME
 * GMAIL_USERNAME
 * GMAIL_PASSWORD
+* FORM_BUILDER_DATABASE_HOST
 * FORM_BUILDER_DATABASE_USERNAME (should be set to a postgres superuser with login privileges)
 * FORM_BUILDER_DATABASE_PASSWORD
-* COUNCH_ENCRYPTION_KEY (Must be 32 characters or longer)
+* COUCH_ENCRYPTION_KEY (Must be 32 characters or longer)
+* COUCH_DOMAIN={couch domain}
+* COUCH_USERNAME={couch user}
+* COUCH_PASSWORD={couch password}
 * SECRET_KEY_BASE
 * MYNA_CLIENT (name of client this application is for)
 * MYNA_BANNER (link to a custom banner that you would like to use)
+
+### Steps to run with docker & docker compose files:
+
+```
+sudo docker-compose build
+sudo docker-compose up
+sudo docker-compose run web rake db:setup
+```
 
  ### For an example of setting the ENV variables on an Ubuntu Machine using `./bash_profile`:
 

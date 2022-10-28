@@ -1,0 +1,47 @@
+<%= form_for @user do |form| %>
+
+
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <h2>
+          <%= pluralize(@user.errors.count, t('errors.error')) %> 
+          <%= t('errors.prohibited') %>
+        </h2>
+        <ul>
+          <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <%= form.label  :name %><span class="text-danger">*</span><br>
+        <%= form.text_field :name, class: "form-control" %>
+      </div>
+    <div class="form-group col-md-6">
+        <%= form.label  :email %><span class="text-danger">*</span><br>
+        <%= form.text_field :email, class: "form-control" %>
+      </div>
+    </div>
+  
+  
+  
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <%= form.label  :roles %><br>
+        <%= form.collection_select(:role_ids, Role.all, :id, :name, {}, { class: "form-control", multiple: true }) %>
+      </div>
+      <div class="form-group col-md-6">
+        <%= form.label  :projects %><br>
+        <%= form.collection_select(:project_ids, Project.all, :id, :name, {}, { class: "form-control", multiple: true }) %>
+      </div>
+    </div>
+    
+    <%= form.submit t('helpers.submit.update', model: User.model_name.human), class: "btn btn-outline-primary" %>
+    <%= link_to t('navigation.cancel'), users_path, class: "btn btn-outline-secondary" %>
+
+   
+  <% end %>
+  

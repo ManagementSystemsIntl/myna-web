@@ -23,7 +23,11 @@
     vm.hideDownload = vm.abilities.indexOf("cannot download dashboards") > -1;
     vm.makeResult = makeResult;
     vm.omitRecords = omitRecords;
+    vm.setGoldRecord = setGoldRecord;
+    vm.removeGoldRecord = removeGoldRecord;
+    vm.currentGolds = [];
     vm.omitString;
+    vm.goldString;
     vm.omittedCount;
     vm.pouch = dashboard.pouch;
     vm.responseSearch;
@@ -36,13 +40,15 @@
     vm.sync = sync;
     vm.syncing = false;
     vm.updateMetadata = updateMetadata;
+    vm.goldStandards = "1,2,3,4,5,6".split(",").map(function(d){ return "Gold "+d});
 
     init();
 
     /////////////////////////////
 
     function init(){
-      return sync();
+      vm.currentGolds = getCurrentGolds();
+      sync();
     }
 
     function downloadData(){
@@ -65,6 +71,49 @@
         $scope.downloadForm.$setPristine();
         $scope.downloadForm.$setUntouched();
       });
+    }
+
+    function setGoldRecord(){
+      if (vm.goldStandard && vm.goldString.length == 13) {
+        vm.pouch.localResponseDB.get(vm.goldString).then(function(doc) {
+          doc.response_info.is_gold=true;
+          doc.response_info.gold_standard = vm.goldStandard;
+          return vm.pouch.localResponseDB.put(doc);
+        }).then(function(res){
+          vm.goldString = undefined;
+          vm.goldStandard = undefined;
+          vm.pouch.setRemoteResponses();
+          console.log("local save", res);
+          vm.currentGolds = getCurrentGolds();
+        }).catch(function (err) {
+          console.log(err);
+        });
+      } else {
+        console.log("Invalid Gold arguments")
+      }
+    }
+
+    function removeGoldRecord(id) {
+      vm.pouch.localResponseDB.get(id).then(function(doc) {
+        delete doc.response_info.is_gold;
+        delete doc.response_info.gold_standard;
+        return vm.pouch.localResponseDB.put(doc);
+      }).then(function(res){
+        vm.pouch.setRemoteResponses();
+        console.log("local save", res);
+        vm.currentGolds = getCurrentGolds();
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+
+    function getCurrentGolds() {
+      vm.pouch.localResponseDB.query("training/find-gold", {include_docs: true, reduce: false}).then(function (result) {
+        vm.currentGolds = result["rows"];
+        $scope.$apply();
+      }).catch(function (err) {
+        console.log(err);
+      });;
     }
 
     function omitRecords(){
@@ -129,13 +178,7 @@
           vm.responseSearchId;
           vm.responseSearchResults = [];
           $scope.$digest();
-          vm.pouch.localResponseDB.replicate.to(vm.pouch.remoteResponseDB, {
-            retry: true
-          }).on("complete", function(info){
-            console.log("change replicated in remote",info)
-          }).on("error", function(err){
-            console.log(err)
-          })
+          vm.pouch.setRemoteResponses();
           console.log("local save", res);
         })
       }

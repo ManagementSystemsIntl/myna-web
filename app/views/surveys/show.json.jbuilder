@@ -1,4 +1,4 @@
-json.extract! @survey, :id, :survey_type, :survey_group_id, :created_at, :updated_at, :name, :grade, :uuid, :is_clone, :version, :version_number, :cloned_from, :version_of, :is_active, :gold_standards
+json.extract! @survey, :id, :survey_type, :survey_group_id, :created_at, :updated_at, :name, :grade, :uuid, :is_clone, :version, :version_number, :cloned_from, :version_of, :is_active, :gold_standards, :show_responses
 # json.versions do
 #   json.array!(@survey.versions) do |version|
 #     json.extract! version, :id, :object

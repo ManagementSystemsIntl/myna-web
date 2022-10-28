@@ -69,7 +69,7 @@
         <i class="fa fa-fw fa-plus-circle"></i> Create new Survey Family
       </div>
       <div class="panel-body">
-        <div data-survey-family-form data-family="vm.newFamily" data-surveys="vm.surveys" data-group="vm.group.id"></div>
+        <div data-survey-family-form data-family="vm.newFamily" data-surveys="vm.surveys" data-group="{{vm.group.id}}"></div>
       </div>
     </div>
   </div>
@@ -167,31 +167,34 @@
         <fieldset class="form-group">
           <label class="block">Schools <span ng-show="vm.schools.schools.length > 0">({{vm.schools.schools.length}})</span>
             <i class="fa fa-fw fa-spinner fa-spin" ng-show="vm.csv.schools.loading"></i>
-            <!-- ng-show="vm.pouchSchools.schools.length > 0"
-            button below will display a modal where individual schools can be edited inline
-            <button class="btn btn-xs btn-default right" ng-hide="true">
-              <i class="fa fa-fw fa-pencil"></i> Edit
-            </button> -->
           </label>
-          <div data-ng-csv-import class="csv-import margin-top-15"data-header="vm.csv.schools.header" data-separator="vm.csv.schools.separator" data-callback="vm.csvCallback" data-content="vm.csv.schools.content" data-result="vm.csv.schools.result"></div>
+          <div data-ng-csv-import class="csv-import margin-top-15" data-header="vm.csv.schools.header" data-separator="vm.csv.schools.separator" data-callback="vm.csvCallback" data-content="vm.csv.schools.content" data-result="vm.csv.schools.result"></div>
           <div class="cf margin-md">
             <span ng-show="vm.csv.schools.result">Records: {{vm.csv.schools.result.length}}</span>
-            <button class="btn btn-primary btn-xs right" ng-click="vm.updateTypeAhead('schools')" ng-class="{disabled: !vm.csv.schools.result}">Update</button>
+            <button class="btn btn-primary btn-xs right" ng-click="vm.updateTypeAhead('schools')" ng-show="vm.csv.schools.result">Update</button>
+            <button class="btn btn-primary btn-xs right" ng-click="vm.downloadCSV('schools')" ng-show="!vm.csv.schools.result && vm.schools.schools.length > 0">Download CSV</button>
           </div>
         </fieldset>
         <fieldset class="form-group">
           <label class="block">Pupils <span ng-show="vm.pupils.pupils.length > 0">({{vm.pupils.pupils.length}})</span>
             <i class="fa fa-fw fa-spinner fa-spin" ng-show="vm.csv.pupils.loading"></i>
-            <!-- ng-show="vm.pouchPupils.pupils.length > 0"
-            button below will display a modal where individual pupils can be edited inline
-            <button class="btn btn-xs btn-default right" ng-hide="true">
-              <i class="fa fa-fw fa-pencil"></i> Edit
-            </button> -->
           </label>
-          <div data-ng-csv-import class="csv-import margin-top-15"data-header="vm.csv.pupils.header" data-separator="vm.csv.pupils.separator" data-callback="vm.csvCallback" data-content="vm.csv.pupils.content" data-result="vm.csv.pupils.result"></div>
+          <div data-ng-csv-import class="csv-import margin-top-15" data-header="vm.csv.pupils.header" data-separator="vm.csv.pupils.separator" data-callback="vm.csvCallback" data-content="vm.csv.pupils.content" data-result="vm.csv.pupils.result"></div>
           <div class="cf margin-md">
             <span ng-show="vm.csv.pupils.result">Records: {{vm.csv.pupils.result.length}}</span>
-            <button class="btn btn-primary btn-xs right" ng-click="vm.updateTypeAhead('pupils')" ng-class="{disabled: !vm.csv.pupils.result}">Update</button>
+            <button class="btn btn-primary btn-xs right" ng-click="vm.updateTypeAhead('pupils')" ng-show="vm.csv.pupils.result">Update</button>
+            <button class="btn btn-primary btn-xs right" ng-click="vm.downloadCSV('pupils')" ng-show="!vm.csv.pupils.result && vm.pupils.pupils.length > 0">Download CSV</button>
+          </div>
+        </fieldset>
+        <fieldset class="form-group">
+          <label class="block">Enumerators <span ng-show="vm.enumerators.enumerators.length > 0">({{vm.enumerators.enumerators.length}})</span>
+            <i class="fa fa-fw fa-spinner fa-spin" ng-show="vm.csv.enumerators.loading"></i>
+          </label>
+          <div data-ng-csv-import class="csv-import margin-top-15" data-header="vm.csv.enumerators.header" data-separator="vm.csv.enumerators.separator" data-callback="vm.csvCallback" data-content="vm.csv.enumerators.content" data-result="vm.csv.enumerators.result"></div>
+          <div class="cf margin-md">
+            <span ng-show="vm.csv.enumerators.result">Records: {{vm.csv.enumerators.result.length}}</span>
+            <button class="btn btn-primary btn-xs right" ng-click="vm.updateTypeAhead('enumerators')" ng-show="vm.csv.enumerators.result">Update</button>
+            <button class="btn btn-primary btn-xs right" ng-click="vm.downloadCSV('enumerators')" ng-show="!vm.csv.enumerators.result && vm.enumerators.enumerators.length > 0">Download CSV</button>
           </div>
         </fieldset>
       </div>

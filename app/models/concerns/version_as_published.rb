@@ -3,7 +3,7 @@ module VersionAsPublished
 
   def version_as_published
     self.paper_trail_event = "publish"
-    self.paper_trail.touch_with_version
+    # self.paper_trail.touch_with_version
     self.paper_trail_event = nil
     # the code below wipes out versions up to last published
     # last_pub = self.versions.where(event:"publish").last

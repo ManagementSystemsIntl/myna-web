@@ -1,5 +1,7 @@
 class SurveyGroup < ActiveRecord::Base
   require 'net/http'
+  require 'csv'
+  require 'json'
   validates :name, presence: true
 
   attr_encrypted :couch_pwd, key: Rails.application.secrets.couch_encryption_key
@@ -8,6 +10,7 @@ class SurveyGroup < ActiveRecord::Base
   has_many :survey_families, dependent: :destroy
   has_many :choice_lists, dependent: :destroy
   has_one :pouch_key, dependent: :destroy
+  belongs_to :project
 
   default_scope { order(:id => :asc) }
 
@@ -15,6 +18,7 @@ class SurveyGroup < ActiveRecord::Base
     surveydb = self.create_db("schemas")
     responsedb = self.create_db("responses")
     if ['201', '202', '412'].include?(surveydb.code) && ['201', '202', '412'].include?(responsedb.code)
+      create_codebook()
       # if successful, make a new user in couch
       user_creds = {:username => SecureRandom.hex(16), :password => SecureRandom.hex(32)}
       user = self.create_user(user_creds)
@@ -34,14 +38,23 @@ class SurveyGroup < ActiveRecord::Base
       response_permissions_updated = self.add_key_to_db("responses", user_creds, response_permissions.body, key || nil)
 
       pdbKey = self.save_pdb_key(user_creds)
+      return true
     end
+    return false
   end
 
   def setup_http
-    uri = URI.parse("https://#{self.couch_domain}")
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    if self.couch_domain == 'couch.egra.education' || self.couch_domain == 'couchtest.egra.education'
+      uri = URI.parse("https://#{self.couch_domain}")
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    else
+      uri = URI.parse("https://#{self.couch_domain}")
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = false
+    end
+    
     return http
   end
 
@@ -52,6 +65,16 @@ class SurveyGroup < ActiveRecord::Base
     req.add_field("Accept","application/json")
     req.basic_auth self.couch_user, self.couch_pwd
     return req
+  end
+
+  def create_codebook
+    http = self.setup_http()
+    req = self.setup_req('Put', "/#{self.db_name}_schemas/codebook")
+    body = {:doc_type => 'EGRA/EGMA Codebook'}
+    codes = CSV.table('db/codebook.csv')
+    body['codes'] = codes.map {|row| row.to_hash }
+    req.body = body.to_json
+    res = http.request(req)
   end
 
   def create_db(type)
@@ -92,7 +115,7 @@ class SurveyGroup < ActiveRecord::Base
 
 
   def db_name
-    ["egra", Rails.application.secrets.client, self.name].join("_").gsub(/[^\d\w_]/,"_").downcase
+    ["egra", self.project.name, self.name].join("_").gsub(/[^\d\w_]/,"_").downcase
   end
 
   def create_new_user(user)

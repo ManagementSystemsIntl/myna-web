@@ -1,10 +1,12 @@
 source 'https://rubygems.org'
 
-ruby '2.3.3'
+ruby '2.6.3'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.11.1'
 # Use postgresql as the database for Active Record
 gem 'pg', '0.18.4'
+# Use Puma as the app server
+gem 'puma'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -23,6 +25,8 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+gem 'bugsnag'
+
 gem 'bootstrap-sass'
 gem 'angular-rails-templates'
 gem 'devise'
@@ -31,9 +35,7 @@ gem 'rack-cors', '~> 1.0.6', require: 'rack/cors'
 gem 'deep_cloneable', '~> 2.2.1'
 gem 'paper_trail'
 gem 'differ'
-source 'https://rails-assets.org' do
-  gem 'rails-assets-ng-rails-csrf'
-end
+gem 'ng-rails-csrf'
 gem 'cancancan', '~> 1.10'
 gem 'rolify'
 gem 'simple_form'
@@ -43,6 +45,12 @@ gem 'net-ssh'
 gem 'attr_encrypted'
 
 gem 'figaro'
+gem 'ed25519'
+gem 'bcrypt_pbkdf'
+
+gem 'lograge'
+gem 'logstash-event'
+
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -74,9 +82,6 @@ group :development do
   gem 'capistrano-rails-collection'
 end
 
-group :production do
-  gem 'puma'
-end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views

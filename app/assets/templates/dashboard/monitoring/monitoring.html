@@ -43,7 +43,7 @@
     <ul class="nav nav-tabs margin-top-15">
       <li class="active">
         <a data-target="#table" data-toggle="tab" href="">
-          <i class="fa fa-fw fa-table"></i> Daily Data
+          <i class="fa fa-fw fa-table"></i> School Data
         </a>
       </li>
       <li ng-show="vm.showFlags">
@@ -58,14 +58,27 @@
       </li>
     </ul>
     <div class="tab-content margin-top-15">
-      <p class="lead margin-sides cf">{{vm.dataDate}}
-        <a href="#" class="btn btn-primary right" data-ng-click="vm.downloadDay()" ng-class="{disabled: vm.downloading}" ng-hide="vm.hideDownload">
-          <i class="fa fa-fw fa-download" ng-show="!vm.downloading"></i>
-          <i class="fa fa-fw fa-spinner fa-spin" ng-show="vm.downloading"></i> Download
-        </a>
-      </p>
+      <div class="row">
+          <div class="col-sm-12">
+              <span class="lead margin-sides cf">{{vm.allDays  ? "All Days" : vm.dataDate}}</span>
+              <a href="#" class="btn btn-primary right" data-ng-click="vm.downloadDay()" ng-class="{disabled: vm.downloading}" ng-hide="vm.hideDownload">
+                <i class="fa fa-fw fa-download" ng-show="!vm.downloading"></i>
+                <i class="fa fa-fw fa-spinner fa-spin" ng-show="vm.downloading"></i> Download
+              </a>
+          </div>
+
+      </div>
       <div id="table" class="tab-pane fade in active">
-        <div data-monitoring-table data-surveys="vm.active"></div>
+          <div class="row">
+              <div class="col-sm-12 text-right">
+                  <input type="checkbox" data-ng-model="vm.allDays"  ng-change="vm.changeDate()"> Show data for all days
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-sm-12 text-right">
+                <div data-monitoring-table data-surveys="vm.active"></div>
+              </div>
+          </div>
       </div>
       <div id="redflags" class="tab-pane fade in" ng-show="vm.showFlags">
         <div data-monitoring-redflags data-pouch="vm.pouch" data-flags="vm.flags"></div>
