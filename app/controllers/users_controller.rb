@@ -1,10 +1,10 @@
-class UsersController < ApiController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :remove_user_role, :add_user_role]
+class UsersController < ApplicationController
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
 
   protect_from_forgery with: :exception, only: [:home]
 
-  layout "angular", only: [:home]
+  layout "application"
 
 
   # GET /users
@@ -44,7 +44,7 @@ class UsersController < ApiController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to users_path, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -66,7 +66,7 @@ class UsersController < ApiController
 
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to users_path, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
@@ -85,24 +85,6 @@ class UsersController < ApiController
     end
   end
 
-  def remove_user_role
-    role = Role.find(params[:role])
-    if @user.delete_role role.name.to_sym
-      render :show, status: :ok, location: @user
-    else
-      render json: @user.errors, status: :unprocessable_entity
-    end
-  end
-
-  def add_user_role
-    role = Role.find(params[:role])
-    if @user.add_role role.name.to_sym
-      render :show, status: :ok, location: @user
-    else
-      render json: @user.errors, status: :unprocessable_entity
-    end
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -111,7 +93,7 @@ class UsersController < ApiController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email)
+      params.require(:user).permit(:name, :email, :role_ids => [], :project_ids => [])
     end
 
 end

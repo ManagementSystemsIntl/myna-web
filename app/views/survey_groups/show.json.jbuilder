@@ -1,4 +1,4 @@
-json.extract! @survey_group, :id, :name, :created_at, :updated_at
+json.extract! @survey_group, :id, :name, :created_at, :updated_at, :school_count
 if @survey_group.pouch_key
   json.pouch_key do
     json.extract! @survey_group.pouch_key, :id, :username, :pwd, :db_name, :db_address

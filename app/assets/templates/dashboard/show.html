@@ -11,22 +11,72 @@
 </div>
 <hr>
 <div class="row margin-top-15 equal">
-  <div class="col-md-4 col-sm-5 col-xs-12">
+  <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="panel panel-default">
       <div class="panel-heading">
         <i class="fa fa-fw fa-dashboard"></i> Dashboards
       </div>
       <div class="panel-body">
+        <div class="col-md-6 col-sm-6 col-xs-6">
         <a data-ui-sref="dashboard.training({id:vm.group.id})" class="btn btn-lg btn-info btn-block" data-state-loading>
           Training
         </a>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
         <a data-ui-sref="dashboard.monitoring({id:vm.group.id})" class="btn btn-lg btn-warning btn-block" data-state-loading>
           Monitoring
         </a>
+        </div>
       </div>
     </div>
   </div>
-  <div class="col-md-8 col-sm-7 col-xs-12">
+</div>
+<div class="row margin-top-15 equal">
+  <div class="col-sm-7 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-fw fa-files-o"></i> Set Gold Standard Records
+      </div>
+      <div class="panel-body">
+        <form>
+          <fieldset class="form-group col-xs-4">
+            <label>Gold Standard</label>
+            <select class="form-control" data-ng-model="vm.goldStandard" ng-options="gold as gold for gold in vm.goldStandards"></select>
+          </fieldset>
+          <fieldset class="form-group col-xs-8">
+            <label>Response ID</label>
+            <div class="input-group">
+              <input type="text" class="form-control ng-class:(vm.syncing)?'disabled':'';" placeholder="Response ID to set" data-ng-model="vm.goldString">
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-success" data-ng-click="vm.setGoldRecord()" title="Set gold record">
+                  <i class="fa fa-check"></i>
+                </button>
+              </span>
+            </div>
+          </fieldset>
+        </form>
+        <table class="table table-striped table-hover monitoring-table" ng-show="!loading">
+          <thead>
+            <tr>
+              <th>Response ID</th>
+              <th>Survey Name</th>
+              <th>Gold Standard</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="gold in vm.currentGolds">
+              <td>{{gold.doc.response_info.doc_id}}</td>
+              <td>{{gold.doc.response_info.survey_name}}</td> 
+              <td>{{gold.doc.response_info.gold_standard}}</td>
+              <td><i class="fa fa-times clickable-icon" data-ng-click="vm.removeGoldRecord(gold.doc.response_info.doc_id)"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-5 col-xs-12">
     <div class="panel panel-default">
       <div class="panel-heading">
         <i class="fa fa-fw fa-eraser"></i> Omit/Restore Records

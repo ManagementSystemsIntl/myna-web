@@ -7,7 +7,9 @@ Rails.application.routes.draw do
 
   get "/app/builder/home" => "builder#index", :as => :builder
   get "/app/dashboard/home" => "dashboards#index", :as => :dashboard
-  get "/app/manage/users" => "management#index", :as => :users
+  resources :users
+  resources :projects
+  get "select_project" => "projects#select_project", :as => :select_project
   get "/app/manage/devices" => "management#index", :as => :devices
   get "/app/manage/forms" => "management#index", :as => :forms
   get "/app/help" => "help#index", :as => :help
@@ -44,15 +46,15 @@ Rails.application.routes.draw do
     post "/surveys/:id/update_target" => "surveys#update_target"
     resources :translations, only: [:index, :show, :update]
     resources :users, only: [:index, :show]
-    post "/users/:id/remove_user_role" => "users#remove_user_role"
-    post "/users/:id/add_user_role" => "users#add_user_role"
-    resources :roles, only: [:index]
     get "/current_user" => "users#current"
+    get "/healthcheck" => "healthcheck#check_db"
   end
 
   get "*builder" => "builder#index"
   get "*dashboard" => "dashboards#index"
   get "*users" => "users#home"
   get "*help" => "help#index"
+
+  
 
 end

@@ -44,12 +44,30 @@
             <i class="fa fa-users fa-fw"></i> Manage Users
           <% end %>
         </li>
+        <li class="toggle-active">
+          <%= link_to projects_path  do %>
+            <i class="fa fa-users fa-fw"></i> Manage Projects
+          <% end %>
+        </li>
       </ul>
     </li>
     <% end %>
   </ul>
 
   <ul class="nav navbar-top-links navbar-right">
+    <li class="nav-item dropdown">
+      <a class="dropdown-toggle" href="#" data-toggle="dropdown">Select Project <i class="fa fa-caret-down"></i></a> 
+      <ul class="dropdown-menu">
+        <% session[:project_list].each do |p| %>
+          <li class="toggle-active">
+            <%= link_to select_project_path+"?project_id="+p["id"].to_s do %>
+              <%= p["name"] %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </li>
+    
     <li class="toggle-active <%= active_class('help') %>">
       <%= link_to help_path do %>
         <i class="fa fa-life-ring fa-fw"></i> Help Docs
@@ -69,7 +87,7 @@
   <div class="navbar-default sidebar fixed" role="navigation">
     <div class="cf">
       <a class="navbar-brand" href="/">
-        <%= image_tag "logo/32x32.png", :class => "logo", :alt => "Myna Web" %> Myna Web - <%= @client.capitalize %>
+        <%= image_tag "logo/32x32.png", :class => "logo", :alt => "Myna Web" %> Myna - <%= @client.capitalize %>
       </a>
     </div>
     <div class="sidebar-nav navbar-collapse">
@@ -80,7 +98,7 @@
   <div class="navbar-default sidebar static" role="navigation">
     <div class="cf">
       <a class="navbar-brand" href="/">
-        <%= image_tag "logo/32x32.png", :class => "logo", :alt => "Myna Web" %> Myna Web - <%= @client.capitalize %>
+        <%= image_tag "logo/32x32.png", :class => "logo", :alt => "Myna Web" %> Myna - <%= @client.capitalize %>
       </a>
     </div>
     <div class="sidebar-nav navbar-collapse">

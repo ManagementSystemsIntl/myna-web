@@ -698,9 +698,25 @@ table.input-rtl {
 .placeholder-text,
 .form-control::placeholder {
   color: #c5c5c5 !important;
-  // color: darken(#daab08, 10) !important;
 }
-// .placeholder-text,
-// .form-control:placeholder-shown {
-//   background-color: #fff7db;
-// }
+
+.clickable-icon {
+  cursor:pointer;
+}
+
+.type-ahead-container {
+  max-height: 130px;
+  overflow-y: auto; 
+}
+.type-ahead-container ul {
+  list-style: none;
+  padding-left: 0; 
+}
+.type-ahead-container li {
+  font-size: 75%;
+  cursor: pointer;
+  padding: 5px; 
+}
+.type-ahead-container li:nth-child(odd) {
+  background: #eaeaea; 
+}

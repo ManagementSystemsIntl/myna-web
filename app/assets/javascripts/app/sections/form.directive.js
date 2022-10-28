@@ -5,9 +5,9 @@
   .module("sections")
   .directive("sectionForm", SectionForm)
 
-  SectionForm.$inject = ["Flash", "Sections"];
+  SectionForm.$inject = ["Flash", "Sections", "pdb", "PouchKeys"];
 
-  function SectionForm(Flash, Sections){
+  function SectionForm(Flash, Sections, pdb, PouchKeys){
 
     var directive = {
       link: link,
@@ -23,10 +23,22 @@
 
     function link(scope, el){
 
+      PouchKeys.fetch("get", {survey_group_id: scope.survey.survey_group_id}).then(function (key) {
+        var pouch = pdb.getGroup(scope.survey.survey_group_id, key.username, key.pwd, key.db_name, key.db_address);
+
+        pouch.remoteSurveyDB.get("codebook").then(function (res) {
+          scope.codes = res.hasOwnProperty("codes") ? angular.copy(res).codes : [];
+         })
+         .catch(function (err) { console.log(err) });
+      }).catch(function (err) { console.log(err) });
+
       scope.delete = deleteSection;
       scope.editAutostop = false;
       scope.originalSection;
       scope.submit = submitSection;
+      scope.setCode = setCode;
+      scope.autocomplete = [];
+      scope.updateAutocomplete = updateAutocomplete;
 
       scope.$on("section-close-edit", function(res, section){
         scope.section = section;
@@ -34,6 +46,23 @@
       });
 
       ////////////////////
+
+      function updateAutocomplete() {
+        if (!scope.section.code || scope.section.code.length < 2) {
+          scope.autocomplete = [];
+          return;
+        };
+        scope.autocomplete = scope.codes.filter(function (d) { 
+          if (d.code) {
+            return d.code.toLowerCase().match(scope.section.code.toLowerCase()) || d.section.toLowerCase().match(scope.section.code.toLowerCase())
+          }
+        });
+      }
+
+      function setCode(code) {
+        scope.autocomplete = [];
+        scope.section.code = code;
+      }
 
       function deleteSection(){
         return scope.section.$delete({id: scope.section.id}, function(res){

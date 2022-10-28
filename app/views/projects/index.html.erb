@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-md-8 col-md-offset-2"><br/><br/>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Manage Projects</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @projects.each do |p| %>
+                <tr>
+                  <td><%= link_to p.name, edit_project_path(p) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <%= link_to "Add New Project", new_project_path, class: "btn btn-outline-primary btn-sm" %>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

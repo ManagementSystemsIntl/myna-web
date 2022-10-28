@@ -1,5 +1,5 @@
 json.array!(@surveys) do |survey|
-  json.extract! survey, :id, :survey_type, :survey_group_id, :name, :grade, :uuid, :is_clone, :version, :version_number, :cloned_from, :version_of, :is_active, :gold_standards
+  json.extract! survey, :id, :survey_type, :survey_group_id, :name, :grade, :uuid, :is_clone, :version, :version_number, :cloned_from, :version_of, :is_active, :gold_standards, :show_responses
   json.version_count survey.versions.length + 1
   if (survey.survey_target)
     json.target survey.survey_target.value

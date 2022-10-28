@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180223192822) do
+ActiveRecord::Schema.define(version: 20201211002212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,8 @@ ActiveRecord::Schema.define(version: 20180223192822) do
     t.datetime "updated_at",      null: false
   end
 
+  add_index "devices", ["uuid"], name: "index_devices_on_uuid", unique: true, using: :btree
+
   create_table "languages", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at",      null: false
@@ -53,6 +55,8 @@ ActiveRecord::Schema.define(version: 20180223192822) do
     t.string   "direction"
     t.integer  "survey_group_id"
   end
+
+  add_index "languages", ["name", "survey_group_id"], name: "index_languages_on_name_and_survey_group_id", unique: true, using: :btree
 
   create_table "pouch_keys", force: :cascade do |t|
     t.integer  "survey_group_id"
@@ -64,6 +68,21 @@ ActiveRecord::Schema.define(version: 20180223192822) do
     t.string   "external_key"
     t.string   "db_address"
   end
+
+  create_table "projects", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "projects_users", id: false, force: :cascade do |t|
+    t.integer "project_id", null: false
+    t.integer "user_id",    null: false
+  end
+
+  add_index "projects_users", ["project_id", "user_id"], name: "index_projects_users_on_project_id_and_user_id", using: :btree
+  add_index "projects_users", ["project_id", "user_id"], name: "projects_users_unique_index", unique: true, using: :btree
+  add_index "projects_users", ["user_id", "project_id"], name: "index_projects_users_on_user_id_and_project_id", using: :btree
 
   create_table "question_attributes", force: :cascade do |t|
     t.integer  "question_option_id"
@@ -98,6 +117,8 @@ ActiveRecord::Schema.define(version: 20180223192822) do
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
   end
+
+  add_index "question_type_options", ["question_type_id", "question_option_id"], name: "index_question_type_options_on_q_type_id_and_q_option_id", unique: true, using: :btree
 
   create_table "question_types", force: :cascade do |t|
     t.string   "name"
@@ -160,12 +181,15 @@ ActiveRecord::Schema.define(version: 20180223192822) do
   create_table "survey_families", force: :cascade do |t|
     t.string   "name"
     t.integer  "survey_group_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.string   "uuid"
     t.boolean  "is_active"
     t.string   "gold_standards"
+    t.boolean  "show_responses",  default: false
   end
+
+  add_index "survey_families", ["uuid"], name: "index_survey_families_on_uuid", unique: true, using: :btree
 
   create_table "survey_family_joins", force: :cascade do |t|
     t.integer  "survey_family_id"
@@ -176,6 +200,8 @@ ActiveRecord::Schema.define(version: 20180223192822) do
     t.integer  "order"
   end
 
+  add_index "survey_family_joins", ["survey_id", "survey_family_id"], name: "index_survey_family_joins_on_survey_id_and_survey_family_id", unique: true, using: :btree
+
   create_table "survey_groups", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at",             null: false
@@ -184,6 +210,8 @@ ActiveRecord::Schema.define(version: 20180223192822) do
     t.string   "encrypted_couch_pwd_iv"
     t.string   "couch_domain"
     t.string   "couch_user"
+    t.integer  "school_count"
+    t.integer  "project_id"
   end
 
   create_table "survey_languages", force: :cascade do |t|
@@ -192,6 +220,8 @@ ActiveRecord::Schema.define(version: 20180223192822) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
+
+  add_index "survey_languages", ["survey_id", "language_id"], name: "index_survey_languages_on_survey_id_and_language_id", unique: true, using: :btree
 
   create_table "survey_targets", force: :cascade do |t|
     t.integer  "value"
@@ -220,7 +250,10 @@ ActiveRecord::Schema.define(version: 20180223192822) do
     t.integer  "missing_translations"
     t.boolean  "is_active"
     t.string   "gold_standards"
+    t.boolean  "show_responses",       default: false
   end
+
+  add_index "surveys", ["uuid"], name: "index_surveys_on_uuid", unique: true, using: :btree
 
   create_table "translations", force: :cascade do |t|
     t.integer  "language_id"
@@ -229,6 +262,8 @@ ActiveRecord::Schema.define(version: 20180223192822) do
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
   end
+
+  add_index "translations", ["question_attribute_id", "language_id"], name: "index_translations_on_question_attribute_id_and_language_id", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
@@ -248,6 +283,7 @@ ActiveRecord::Schema.define(version: 20180223192822) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
+    t.jsonb    "data",                   default: {}, null: false
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
@@ -272,4 +308,31 @@ ActiveRecord::Schema.define(version: 20180223192822) do
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
 
+  add_foreign_key "choice_lists", "languages", on_delete: :cascade
+  add_foreign_key "choice_lists", "survey_groups", on_delete: :cascade
+  add_foreign_key "connections", "devices", on_delete: :cascade
+  add_foreign_key "connections", "survey_groups"
+  add_foreign_key "devices", "survey_groups", on_delete: :nullify
+  add_foreign_key "languages", "survey_groups", on_delete: :cascade
+  add_foreign_key "pouch_keys", "survey_groups", on_delete: :cascade
+  add_foreign_key "question_attributes", "choice_lists", on_delete: :cascade
+  add_foreign_key "question_attributes", "question_options", on_delete: :cascade
+  add_foreign_key "question_attributes", "questions", on_delete: :cascade
+  add_foreign_key "question_type_options", "question_options", on_delete: :cascade
+  add_foreign_key "question_type_options", "question_types", on_delete: :cascade
+  add_foreign_key "question_types", "question_categories", on_delete: :cascade
+  add_foreign_key "questions", "choice_lists", on_delete: :nullify
+  add_foreign_key "questions", "question_types", on_delete: :nullify
+  add_foreign_key "questions", "sections", on_delete: :cascade
+  add_foreign_key "questions", "surveys", on_delete: :cascade
+  add_foreign_key "sections", "surveys", on_delete: :cascade
+  add_foreign_key "survey_families", "survey_groups", on_delete: :cascade
+  add_foreign_key "survey_family_joins", "survey_families", on_delete: :cascade
+  add_foreign_key "survey_family_joins", "surveys", on_delete: :cascade
+  add_foreign_key "survey_groups", "projects"
+  add_foreign_key "survey_languages", "languages", on_delete: :cascade
+  add_foreign_key "survey_languages", "surveys", on_delete: :cascade
+  add_foreign_key "surveys", "survey_groups", on_delete: :cascade
+  add_foreign_key "translations", "languages", on_delete: :cascade
+  add_foreign_key "translations", "question_attributes", on_delete: :cascade
 end

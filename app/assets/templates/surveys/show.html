@@ -37,7 +37,8 @@
         <span data-ng-show="vm.survey.is_active"> Remove from Tablet</span>
         <span data-ng-hide="vm.survey.is_active"> Add to Tablet</span>
       </a>
-      <p class="margin-top-15 margin-sides">Last Published:  {{vm.survey.last_published}} <span data-ng-show="vm.survey.last_version">(v.{{vm.survey.last_version}})</span></p>
+      <p class="margin-top-15 margin-sides">Last Published:  {{vm.survey.last_published}} <span data-ng-show="vm.survey.last_version">(v.{{vm.survey.last_version}})</span>
+       <br> <span>UUID: {{vm.survey.uuid}}</span></p>
     </div>
   </div>
   <div class="modal fade" id="uploadSchemaModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">

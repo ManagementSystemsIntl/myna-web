@@ -38,7 +38,7 @@
         if (n.hasOwnProperty("id")) {
           var setup = setupSurvey(n);
           scope.goldStandards = "1,2,3,4,5,6".split(",").map(function(d){ return {v: d, checked: setup.golds.indexOf(d) > -1}});
-          scope.grades = "1,2,3,4,5".split(",").map(function(d){ return {v: d, checked: setup.grades.indexOf(d) > -1}});
+          scope.grades = "1,2,3,4,5,6,7,8".split(",").map(function(d){ return {v: d, checked: setup.grades.indexOf(d) > -1}});
           scope.$watch("languages", function (n,o) {
             if (n) {
               scope.languagesCopy = angular.copy(n);
@@ -49,7 +49,7 @@
           });
         } else {
           scope.goldStandards = "1,2,3,4,5,6".split(",").map(function(d){ return {v: d, checked: false} });
-          scope.grades = "1,2,3,4,5".split(",").map(function(d){ return {v: d, checked: false} });
+          scope.grades = "1,2,3,4,5,6,7,8".split(",").map(function(d){ return {v: d, checked: false} });
           scope.checked = {grade: 0, gs: 0, language: 0};
           surveywatch();
         }
@@ -59,7 +59,7 @@
       scope.$on("survey-cancel-edit", function(res, survey){
         var setup = setupSurvey(survey);
         scope.goldStandards = "1,2,3,4,5,6".split(",").map(function(d){ return {v: d, checked: setup.golds.indexOf(d) > -1}});
-        scope.grades = "1,2,3,4,5".split(",").map(function(d){ return {v: d, checked: setup.grades.indexOf(d) > -1}});
+        scope.grades = "1,2,3,4,5,6,7,8".split(",").map(function(d){ return {v: d, checked: setup.grades.indexOf(d) > -1}});
         scope.languagesCopy.map(function(d){ d.checked = setup.languages.indexOf(d.id) > -1; return d;});
         scope.checked = {grade: setup.grades.length, gs: setup.golds.length, language: setup.languages.length};
       });
@@ -100,7 +100,7 @@
             scope.$emit("survey-created", survey);
             scope.languagesCopy = angular.copy(scope.languages);
             scope.goldStandards = "1,2,3,4,5,6".split(",").map(function(d){ return {v: d, checked: false} });
-            scope.grades = "1,2,3,4,5".split(",").map(function(d){ return {v: d, checked: false} });
+            scope.grades = "1,2,3,4,5,6,7,8".split(",").map(function(d){ return {v: d, checked: false} });
             scope.checked = {grade: 0, gs: 0, language: 0};
             scope.survey = Surveys.make({survey_group_id: scope.group});
           });

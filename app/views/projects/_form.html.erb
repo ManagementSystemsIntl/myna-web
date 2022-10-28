@@ -1,0 +1,34 @@
+<%= form_for @project do |form| %>
+
+
+    <% if @project.errors.any? %>
+      <div id="error_explanation">
+        <h2>
+          <%= pluralize(@project.errors.count, t('errors.error')) %> 
+          <%= t('errors.prohibited') %>
+        </h2>
+        <ul>
+          <% @project.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <%= form.label  :name %><span class="text-danger">*</span><br>
+        <%= form.text_field :name, class: "form-control" %>
+      </div>
+    </div>
+    
+    <% if current_page?(new_project_path) || @project.id == nil %>
+      <%= form.submit "Add Project", class: "btn btn-outline-primary" %>
+    <% else %>
+      <%= form.submit "Update Project", class: "btn btn-outline-primary" %>
+    <% end %>
+    <%= link_to t('navigation.cancel'), projects_path, class: "btn btn-outline-secondary" %>
+
+   
+  <% end %>
+  

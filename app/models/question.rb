@@ -192,6 +192,15 @@ class Question < ActiveRecord::Base
       schema[:titleMap] = grid_string.value.split(grid_splitter).each_with_index.map{|g,i|
         {name: "#{prefix}_grid_string_#{i+1}", value: "#{(i+1).to_s}"}
       }
+    elsif qt == "slider"
+      grid_string = attributes.find_by(:name => "grid_string")
+      schema[:htmlClass] = "slider slider-5 survey_direction test_slider_0_timer test_slider_0_autostop sliderName-test_test owl-carousel owl-theme"
+      schema[:fieldHtmlClass] = "owl-item slider-item"
+      schema[:labelHtmlClass] =  "hideme"
+      grid_splitter = grid_string.value.split("--").length > 1 ? "--" : " "
+      schema[:titleMap] = grid_string.value.split(grid_splitter).each_with_index.map{|g,i|
+        {name: "#{prefix}_grid_string_#{i+1}", value: "#{(i+1).to_s}"}
+      }
     elsif qt == "timer"
       htmlClass = "timer survey_direction #{code}_timer timerName-#{code}"
       schema[:htmlClass] = htmlClass

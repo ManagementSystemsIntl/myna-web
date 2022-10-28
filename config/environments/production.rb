@@ -46,10 +46,10 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug
+  config.log_level = :info
 
   # Prepend all log lines with the following tags.
-  # config.log_tags = [ :subdomain, :uuid ]
+  config.log_tags = [ :subdomain ]
 
   # Use a different logger for distributed setups.
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
@@ -88,6 +88,19 @@ Rails.application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  end
+
+  config.lograge.enabled = true
+  config.lograge.formatter = Lograge::Formatters::Logstash.new
+  config.lograge.ignore_actions = ['HealthcheckController#check_db']
+  config.lograge.custom_options = lambda do |event|
+    {remote_ip: event.payload[:remote_ip], user_id: event.payload[:user_id], params: event.payload[:params].except('controller', 'action', 'format', 'utf8')}
+  end
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false

@@ -4,6 +4,11 @@
       <label for="family.name">Survey Family Name</label>
       <input class="form-control" type="text" data-ng-model="family.name" placeholder="EGRA/EGMA grade 2 tool" required>
     </fieldset>
+    <fieldset class="col-md-12 col-sm-12 col-xs-12 form-group radio-toggle c">
+      <label for="family.show_responses">Show Responses in Mobile App?</label>
+      <label class="toggle first form-control"><input type="radio" data-ng-model="family.show_responses" data-ng-value="true"><span>Yes</span></label>
+      <label class="toggle last form-control"><input type="radio" data-ng-model="family.show_responses" data-ng-value="false"><span>No</span></label>
+    </fieldset>
     <fieldset class="form-group col-md-6">
       <input type="hidden" ng-required="checked.gs <= 1">
       <label>Survey Family</label>

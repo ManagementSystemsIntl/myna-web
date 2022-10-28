@@ -1,4 +1,4 @@
-json.extract! @survey_family, :id, :name, :survey_group_id, :created_at, :updated_at, :is_active, :gold_standards, :uuid
+json.extract! @survey_family, :id, :name, :survey_group_id, :created_at, :updated_at, :is_active, :gold_standards, :uuid, :show_responses
 json.schema @survey_family.family_schema
 if (@survey_family.survey_target)
   json.target @survey_family.survey_target.value

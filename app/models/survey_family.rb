@@ -14,7 +14,7 @@ class SurveyFamily < ActiveRecord::Base
     surveys = self.survey_family_joins.map{|d|
       {random: d.is_random, order: d.order, uuid: d.survey.uuid, grade: d.survey.grade}
     }
-    iteration = self.schemas.length > 0 ? self.schemas.last.iteration + 1 : 1
+    iteration = self.schemas.length > 0 ? self.schemas.first.iteration + 1 : 1
 
     schema = {}
     schema[:doc_type] = "schema-family"

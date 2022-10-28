@@ -1,8 +1,13 @@
 <div>
   <form data-ng-submit="submit()" name="sectionForm">
     <fieldset class="form-group col-md-4 col-sm-4 col-xs-6">
-      <label for="section.code">Subtask Code <i class="fa fa-fw fa-lg fa-info-circle" title="letters, numbers, dashes and underscores only (no spaces!)"></i></label>
-      <input class="form-control" type="text" data-ng-model="section.code" placeholder="fwr" required pattern="[a-zA-Z0-9-_]+">
+      <label for="section.code">Subtask Code <i class="fa fa-fw fa-lg fa-info-circle" title="letters, numbers, dashes and underscores only (no spaces!); can type section description for lookup"></i></label>
+      <input class="form-control" type="text" data-ng-model="section.code" ng-change="updateAutocomplete()" placeholder="fwr" required pattern="[a-zA-Z0-9-_]+">
+      <div ng-show="autocomplete.length > 0" class="type-ahead-container">
+        <ul class="type-ahead-list">
+          <li ng-repeat="code in autocomplete" ng-click="setCode(code.code)">{{code.code}} - {{code.section}}</li>
+        </ul>
+      </div>
     </fieldset>
     <fieldset class="form-group col-md-8 col-sm-4 col-xs-12">
       <label for="section.name">Subtask Title</label>

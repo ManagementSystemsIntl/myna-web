@@ -5,7 +5,7 @@ class SurveyGroupsController < ApiController
   # GET /survey_groups
   # GET /survey_groups.json
   def index
-    @survey_groups = SurveyGroup.all
+    @survey_groups = SurveyGroup.where(:project_id => session[:project_id])
     @tree = params[:tree]
   end
 
@@ -17,13 +17,17 @@ class SurveyGroupsController < ApiController
   # POST /survey_groups
   # POST /survey_groups.json
   def create
-    @survey_group = SurveyGroup.new({:name => params[:name], :couch_user => params[:couch_user], :couch_pwd => params[:couch_pwd], :couch_domain => params[:couch_domain]})
-    if @survey_group.save
-      @survey_group.create_couch_dbs
-      # @create = true
-      # in jbuilder, compile and display errors in flash, pass to front end
-      render :show, status: :created, location: @survey_group
-    else
+    @survey_group = SurveyGroup.new({:name => params[:name], :couch_user => params[:couch_user], :couch_pwd => params[:couch_pwd], :couch_domain => params[:couch_domain], :project_id => session[:project_id]})
+    if @survey_group.create_couch_dbs
+      if @survey_group.save
+        
+        # @create = true
+        # in jbuilder, compile and display errors in flash, pass to front end
+        render :show, status: :created, location: @survey_group
+      else
+        render json: @survey_group.errors, status: :unprocessable_entity
+      end
+    else 
       render json: @survey_group.errors, status: :unprocessable_entity
     end
   end
@@ -53,6 +57,6 @@ class SurveyGroupsController < ApiController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def survey_group_params
-      params.require(:survey_group).permit(:name, :couch_user, :couch_pwd, :couch_domain)
+      params.require(:survey_group).permit(:name, :couch_user, :couch_pwd, :couch_domain, :school_count)
     end
 end

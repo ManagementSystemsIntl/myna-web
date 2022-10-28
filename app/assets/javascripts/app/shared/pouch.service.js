@@ -31,9 +31,13 @@
       g.localResponseDB = new PouchDB("responseDB_"+group_id);
       g.remoteSurveyDB = new PouchDB("https://"+pouch_user+":"+pouch_pwd+"@"+db_address+"/"+db_name+"_schemas");
       g.remoteResponseDB = new PouchDB("https://"+pouch_user+":"+pouch_pwd+"@"+db_address+"/"+db_name+"_responses");
+      //g.remoteSurveyDB = new PouchDB("http://"+pouch_user+":"+pouch_pwd+"@penguin.linux.test:5984/"+db_name+"_schemas");
+      //g.remoteResponseDB = new PouchDB("http://"+pouch_user+":"+pouch_pwd+"@penguin.linux.test:5984/"+db_name+"_responses");
 
       g.getSurveys = getSurveys;
       g.getResponses = getResponses;
+      g.setRemoteSurveys = setRemoteSurveys;
+      g.setRemoteResponses = setRemoteResponses;
       g.getDesginDocs = getDesginDocs;
       g.syncDBs = syncDBs;
       g.changeStatus = changeStatus;
@@ -62,6 +66,32 @@
     function getResponses(){
       var g = this;
       return g.remoteResponseDB.replicate.to(g.localResponseDB, {
+        retry:true
+      }).on("complete", function(res){
+        console.log("responses updated", res);
+        return "ok";
+      }).on("error", function(err){
+        console.log("error syncing responses", err);
+        return err;
+      })
+    }
+
+    function setRemoteSurveys(){
+      var g = this;
+      return g.localSurveyDB.replicate.to(g.remoteSurveyDB, {
+        retry:true
+      }).on("complete", function(res){
+        console.log("surveys updated", res);
+        return "ok";
+      }).on("error", function(err){
+        console.log("error syncing surveys", err);
+        return err;
+      })
+    }
+
+    function setRemoteResponses(){
+      var g = this;
+      return g.localResponseDB.replicate.to(g.remoteResponseDB, {
         retry:true
       }).on("complete", function(res){
         console.log("responses updated", res);

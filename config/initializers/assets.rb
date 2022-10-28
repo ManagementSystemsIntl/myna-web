@@ -10,3 +10,7 @@ Rails.application.config.assets.version = '1.0'
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )
 Rails.application.config.assets.precompile += %w( app.js )
+
+%w(eot svg ttf woff woff2).each do |ext|
+  Rails.application.config.assets.precompile << "fontawesome-webfont.#{ext}"
+end

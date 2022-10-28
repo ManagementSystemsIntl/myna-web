@@ -11,4 +11,15 @@
 /log/*
 !/log/.keep
 /tmp
-/.idea/*
+
+#/vendor/assets/bower_components
+/config/database.yml
+/config/secrets.yml
+
+# Ignore application configuration
+/config/application.yml
+
+# Environment files that may contain sensitive data
+.env
+
+/public/assets/

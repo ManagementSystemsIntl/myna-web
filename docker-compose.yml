@@ -1,0 +1,18 @@
+version: '3'
+services:
+  db:
+    image: postgres:11
+    ports:
+    - "5431:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+  web:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec puma"
+    volumes:
+      - .:/myna-web
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    env_file: .env

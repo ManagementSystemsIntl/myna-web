@@ -214,13 +214,17 @@
     // type-aheads
     vm.csv = {
       schools: { header:true, separator:",", result:"", content:"", accept:".csv", loading: true },
-      pupils: { header:true, separator:",", result:"", content:"", accept:".csv", loading: true }
+      pupils: { header:true, separator:",", result:"", content:"", accept:".csv", loading: true },
+      enumerators: { header:true, separator:",", result:"", content:"", accept:".csv", loading: true }
     };
     vm.csvCallback = csvService.callback;
     vm.schools = getTypeAhead('schools');
     vm.pupils = getTypeAhead('pupils');
+    vm.enumerators = getTypeAhead('enumerators');
     vm.updateTypeAhead = updateTypeAhead;
     vm.removeTypeAhead = removeTypeAhead;
+    vm.downloadCSV = downloadCSV;
+    vm.convertArrayOfObjectsToCSV = convertArrayOfObjectsToCSV;
 
     function removeTypeAhead(type) {
       var doc = vm[type];
@@ -231,8 +235,61 @@
       });
     }
 
+    function convertArrayOfObjectsToCSV(type) {
+      var result, ctr, keys, columnDelimiter, lineDelimiter, data;
+
+      data = vm[type][type] || null;
+      if (data == null || !data.length) {
+        return null;
+      }
+
+      columnDelimiter = ',';
+      lineDelimiter = '\n';
+
+      keys = Object.keys(data[0]);
+
+      result = '';
+      result += keys.join(columnDelimiter);
+      result += lineDelimiter;
+
+      data.forEach(function(item) {
+          ctr = 0;
+          keys.forEach(function(key) {
+              if (ctr > 0) result += columnDelimiter;
+
+              result += item[key];
+              ctr++;
+          });
+          result += lineDelimiter;
+      });
+
+      return result;
+    }
+
+    function downloadCSV(type) {
+      var data, filename, link;
+
+      var csv = convertArrayOfObjectsToCSV(type);
+      if (csv == null) return;
+
+      filename = type + '.csv';
+
+      if (!csv.match(/^data:text\/csv/i)) {
+          csv = 'data:text/csv;charset=utf-8,' + csv;
+      }
+      data = encodeURI(csv);
+
+      link = document.createElement('a');
+      link.setAttribute('href', data);
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
     function updateTypeAhead(type) {
-      vm[type][type] = vm.csv[type].result.map(type === 'schools' ? mapSchools : mapPupils);
+      var teams = [];
+      vm[type][type] = vm.csv[type].result.map(type === 'schools' ? mapSchools : (type === 'pupils' ? mapPupils : mapEnumerators));
       return vm.pouch.remoteSurveyDB.put(vm[type]).then(function (res) {
         vm.csv[type].loading = true;
         resetCSV(type);
@@ -240,10 +297,10 @@
       });
 
       function mapSchools(d){
-        d.school_id = appendZeros(d.school_id);
+        //d.school_id = appendZeros(d.school_id);
         d.latitude = parseFloat(d.latitude);
         d.longitude = parseFloat(d.longitude);
-        d.location_description = d.location_description.replace(/"/g, "");
+        //d.location_description = d.location_description.replace(/"/g, "");
         return d;
 
         function appendZeros(id){
@@ -260,6 +317,15 @@
       function mapPupils(d){
         d.gender = d.gender == "0" ? "f" : "m";
         d.age = parseInt(d.age);
+        return d;
+      }
+
+      function mapEnumerators(d, i){
+        if (!d.team_code) {
+          if (teams.indexOf(d.team) < 0) teams.push(d.team);
+          d.team_code = teams.indexOf(d.team).toString();
+        }
+        d.code = !d.code ? i.toString() + '_' + d.team_code : d.code;
         return d;
       }
     }

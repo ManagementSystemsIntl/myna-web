@@ -21,7 +21,7 @@
     <p data-ng-show="attributes.grid_autostop"><b>Grid AutoStop</b>: <span ng-show="attributes.grid_autostop.value > 0">{{attributes.grid_autostop.value}}</span><span ng-show="attributes.grid_autostop.value === -1">none</span></p>
     <p data-ng-show="attributes.display_as"><b>Display As</b>: {{display_names[attributes.display_as.value]}}</p>
     <p data-ng-show="attributes.choice && !choice_list"><b>Options</b>:
-      <ul data-ng-show="attributes.choice && !choice_list"><li data-ng-repeat="choice in attributes.choice | orderBy:'order'">{{choice.value}} : {{choice.coded_value}}</li></ul>
+      <ul data-ng-show="attributes.choice && !choice_list"><li data-ng-repeat="choice in attributes.choice | orderBy:'order'" ng-if="!choice.markForDeletion">{{choice.value}} : {{choice.coded_value}}</li></ul>
     </p>
     <p data-ng-show="attributes.choice && choice_list"><b>Choice List</b>: {{choice_list.name}}
       <ul><li data-ng-repeat="choice in choice_list.choices | orderBy:'order'">{{choice.value}} : {{choice.coded_value}}</li></ul>
